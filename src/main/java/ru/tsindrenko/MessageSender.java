@@ -33,10 +33,20 @@ public class MessageSender extends Thread {
             } catch (IOException e) {
 
             }
+            finally {
+                try {
+                    out.write("stop");
+                    out.flush();
+                    System.out.println("Отправлено");
+                }
+                catch (IOException ex){}
+            }
         }
         stopSender();
+
     }
 
+    //Завершает работу потоков
     public void stopSender(){
         try {
             out.close();
