@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="de21fdfe-2864-4974-bdaa-15f5ab0a11b9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageSender.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -26,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="22" lean-forward="true" selection-start-column="22" selection-end-column="22" />
+            <state relative-caret-position="153">
+              <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -38,11 +40,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageSender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="39" column="50" selection-start-line="39" selection-start-column="50" selection-end-line="39" selection-end-column="50" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="170">
+              <caret line="19" column="94" selection-start-line="19" selection-start-column="94" selection-end-line="19" selection-end-column="94" />
             </state>
           </provider>
         </entry>
@@ -50,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="697">
-              <caret line="41" column="5" lean-forward="true" selection-start-line="41" selection-start-column="5" selection-end-line="41" selection-end-column="5" />
+            <state relative-caret-position="391">
+              <caret line="23" column="42" selection-start-line="23" selection-start-column="42" selection-end-line="23" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -69,6 +68,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Balpgot &lt;cinilya1712@gmail.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
@@ -98,7 +102,32 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="ChatClient" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ChatClient" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ChatClient" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ChatClient" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ChatClient" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ChatClient" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -142,7 +171,8 @@
       <workItem from="1569258657876" duration="1772000" />
       <workItem from="1569329990668" duration="5190000" />
       <workItem from="1569524304552" duration="1458000" />
-      <workItem from="1569688843896" duration="6726000" />
+      <workItem from="1569688843896" duration="6754000" />
+      <workItem from="1569764621188" duration="9071000" />
     </task>
     <task id="LOCAL-00001" summary="Классы:&#10;MessageReceiver принимает сообщения от сервера в отдельном потоке&#10;MessageSender отправляет сообщения серверу в отдельном потоке">
       <created>1569693295976</created>
@@ -151,17 +181,23 @@
       <option name="project" value="LOCAL" />
       <updated>1569693295976</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Небольшие изменения">
+      <created>1569704367594</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1569704367594</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15146000" />
+    <option name="totallyTimeSpent" value="24245000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="960" y="0" width="960" height="1040" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.13444445" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13444445" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -228,28 +264,29 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Классы:&#10;MessageReceiver принимает сообщения от сервера в отдельном потоке&#10;MessageSender отправляет сообщения серверу в отдельном потоке" />
-    <option name="LAST_COMMIT_MESSAGE" value="Классы:&#10;MessageReceiver принимает сообщения от сервера в отдельном потоке&#10;MessageSender отправляет сообщения серверу в отдельном потоке" />
+    <MESSAGE value="Небольшие изменения" />
+    <option name="LAST_COMMIT_MESSAGE" value="Небольшие изменения" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/Client.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/IncomingMessages.java" />
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="41" column="5" lean-forward="true" selection-start-line="41" selection-start-column="5" selection-end-line="41" selection-end-column="5" />
+        <state relative-caret-position="391">
+          <caret line="23" column="42" selection-start-line="23" selection-start-column="42" selection-end-line="23" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="22" lean-forward="true" selection-start-column="22" selection-end-column="22" />
+        <state relative-caret-position="153">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -258,11 +295,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageSender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="39" column="50" selection-start-line="39" selection-start-column="50" selection-end-line="39" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="170">
+          <caret line="19" column="94" selection-start-line="19" selection-start-column="94" selection-end-line="19" selection-end-column="94" />
         </state>
       </provider>
     </entry>

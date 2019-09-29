@@ -19,7 +19,7 @@ public class MessageReceiver extends Thread {
         try {
             while (true) {
                 str = in.readLine(); // ждем сообщения с сервера
-                if (str.equals("break_connection") || !isActive) {
+                if (str.equals("BREAK_CONNECTION") || !isActive) {
                     System.out.println("Соединение завершено");
                     break; // выходим из цикла если пришло "stop"
                 }
