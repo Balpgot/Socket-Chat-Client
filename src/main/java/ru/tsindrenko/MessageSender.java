@@ -17,7 +17,7 @@ public class MessageSender extends Thread {
     @Override
     public void run() {
         String userWord;
-        File file = new File("D://JavaProjects//ChatClient//src//main//resources//files//2.txt");
+        File file = new File("C://time.txt");
         if(file.exists()){
             System.out.println("Файл найден");
         }
@@ -30,13 +30,6 @@ public class MessageSender extends Thread {
                     //отправляем флаг файла
                     out.write("FILE\n");
                     out.flush();
-                    synchronized (this) {
-                        wait(3000);
-                    }
-                    //начинаем передачу файла
-                    if(sendFile(file)){
-                        System.out.println("Отправка успешна");
-                    }
                 }
                 else{
                     if (userWord.equals("stop") || !isActive) {
@@ -49,7 +42,6 @@ public class MessageSender extends Thread {
                 }
             } catch (IOException e) {
             }
-            catch (InterruptedException ex){}
         }
         stopSender();
 
@@ -67,13 +59,13 @@ public class MessageSender extends Thread {
         }
     }
 
-    public boolean sendFile(File file){
+    /*public boolean sendFile(File file){
         try {
             System.out.println("Sending: " + file.getName());
             //определяем размер пакета и открываем файл на чтение
             byte[] byteArray = new byte[8192];
             FileInputStream fis = new FileInputStream(file.getPath());
-            synchronized (this) {
+            /*synchronized (this) {
                 wait(3000); // ждем, чтобы у сервера всё было готово
             }
             //отправляем серверу имя файла
@@ -86,7 +78,7 @@ public class MessageSender extends Thread {
             out.flush();
             System.out.println("Отправлен размер файла");
             //начинаем отправку данных
-            synchronized (this) {
+            /*synchronized (this) {
                 wait(3000); // ждем, чтобы у сервера всё было готово
             }
             System.out.println("Начинаю оправлять");
@@ -103,10 +95,11 @@ public class MessageSender extends Thread {
         catch (IOException ex){
             System.out.println("sendFile: " + ex.getMessage());
         }
-        catch (InterruptedException ex){
+        /*catch (InterruptedException ex){
             System.out.println("sendFile: " + ex.getMessage());
         }
         return false;
     }
+    */
 
 }
