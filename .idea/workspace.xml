@@ -2,24 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="de21fdfe-2864-4974-bdaa-15f5ab0a11b9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/FileMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/LoginMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/ServiceMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/TextMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/LoginForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/LoginForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageSender.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/Sender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/files/1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/files/2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/files/add.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/files/file.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$ButtonEventListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$ButtonEventListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/LoginForm$ButtonEventListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/LoginForm$ButtonEventListener.class" afterDir="false" />
@@ -65,8 +48,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="56" column="34" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="34" />
+            <state relative-caret-position="429">
+              <caret line="70" selection-start-line="70" selection-end-line="71" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#showMessage#0;class#MessageReceiver#0" />
@@ -389,7 +372,7 @@
       <workItem from="1570463089465" duration="2683000" />
       <workItem from="1570538103502" duration="3660000" />
       <workItem from="1570562205828" duration="1341000" />
-      <workItem from="1570570080431" duration="8073000" />
+      <workItem from="1570570080431" duration="8364000" />
     </task>
     <task id="LOCAL-00001" summary="Классы:&#10;MessageReceiver принимает сообщения от сервера в отдельном потоке&#10;MessageSender отправляет сообщения серверу в отдельном потоке">
       <created>1569693295976</created>
@@ -419,11 +402,18 @@
       <option name="project" value="LOCAL" />
       <updated>1570466355740</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Добавлены классы для сериализации сообщений&#10;Сообщения формируются с помощбю JSON&#10;Обновлены методы для авторизации, приема и передачи сообщений">
+      <created>1570578472663</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1570578472663</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52064000" />
+    <option name="totallyTimeSpent" value="52355000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -447,7 +437,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.33480176" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31497797" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.31497797" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -477,7 +467,8 @@
     <MESSAGE value="Небольшие изменения" />
     <MESSAGE value="Разработан метод для отправки файлов" />
     <MESSAGE value="Обновлен класс для отсылки сообщений, улучшен UI и добавлено окно входа" />
-    <option name="LAST_COMMIT_MESSAGE" value="Обновлен класс для отсылки сообщений, улучшен UI и добавлено окно входа" />
+    <MESSAGE value="Добавлены классы для сериализации сообщений&#10;Сообщения формируются с помощбю JSON&#10;Обновлены методы для авторизации, приема и передачи сообщений" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавлены классы для сериализации сообщений&#10;Сообщения формируются с помощбю JSON&#10;Обновлены методы для авторизации, приема и передачи сообщений" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/Client.java" />
@@ -646,8 +637,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="56" column="34" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="34" />
+        <state relative-caret-position="429">
+          <caret line="70" selection-start-line="70" selection-end-line="71" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#showMessage#0;class#MessageReceiver#0" />
