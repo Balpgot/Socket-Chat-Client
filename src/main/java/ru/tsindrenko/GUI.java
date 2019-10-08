@@ -1,5 +1,7 @@
 package ru.tsindrenko;
 
+import com.google.gson.Gson;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,24 +16,27 @@ public class GUI extends JFrame {
     private JButton sendFileButton;
     private JScrollPane chatScrollPane;
     private JScrollPane chatroomScroll;
+    private Gson gson;
+
 
     GUI(){
         setContentPane(rootPanel);
-        setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         ButtonEventListener buttonEventListener = new ButtonEventListener();
         sendButton.addActionListener(buttonEventListener);
         sendFileButton.addActionListener(buttonEventListener);
+        gson = new Gson();
     }
 
     class ButtonEventListener implements ActionListener {
         public void actionPerformed(ActionEvent e){
             if(e.getSource().equals(sendButton) && !inputMessageField.getText().isEmpty()){
-                Sender.sendMessage(inputMessageField.getText());
+                TextMessage textMessage = new TextMessage(Sender.modifyText(inputMessageField.getText()),0,-1);
+                Sender.sendMessage(gson.toJson(textMessage));
                 inputMessageField.setText("");
             }
             if(e.getSource().equals(sendFileButton)){
-                File file = new File("C://time.txt");
+                File file = new File("C://test.txt");
                 Sender.sendFile(file);
             }
         }
@@ -43,7 +48,7 @@ public class GUI extends JFrame {
 
     public void fillChatroomList(String list){
         String chatroomStringList = list.substring(list.indexOf("[")+1,list.indexOf("]"));
-        String [] chatrooms = chatroomStringList.split(",");
+        String [] chatrooms = chatroomStringList.split(";");
         chatroomList.setListData(chatrooms);
     }
 

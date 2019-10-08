@@ -1,12 +1,30 @@
 package ru.tsindrenko;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import com.google.gson.Gson;
+import org.json.JSONObject;
+
+import java.io.*;
+import java.util.Random;
 
 public class MessageReceiver extends Thread {
+    private final String disconnectClient = "BREAK_CONNECTION";
+    private final String accepted = "SUCCESSFUL_OPERATION";
+    private final String loginInfo = "LOGIN";
+    private final String fileInfo = "FILE";
+    private final String serviceInfo = "SERVICE";
+    private final String messageInfo = "TEXT";
+    private final String patchInfo = "PATCH_INFO";
+    private final String requestInfo = "REQUEST_INFO";
+    private final String userNotFound = "USER_NOT_FOUND";
+    private final String wrongPassword = "WRONG_PASSWORD";
+    private final String loginIsOccupied = "LOGIN_IS_OCCUPIED";
+    private final String userIsLogged = "USER_IS_LOGGED";
+
     private BufferedReader in; // поток чтения из сокета
     private boolean isActive;
     private GUI gui;
+    private Gson gson = new Gson();
+
 
     MessageReceiver(BufferedReader in, GUI gui){
         this.in = in;
@@ -21,20 +39,90 @@ public class MessageReceiver extends Thread {
         try {
             while (true) {
                 str = in.readLine(); // ждем сообщения с сервера
-                if(str.startsWith("CHATROOMS:")){
-                    gui.fillChatroomList(str);
-                }
-                if (str.equals("BREAK_CONNECTION") || !isActive) {
-                    System.out.println("Соединение завершено");
-                    break; // выходим из цикла если пришло "stop"
-                }
-                //System.out.println(str);
-                gui.getChatWindow().append(str + "\n");
+                messageHandler(str);
             }
         } catch (IOException e) {
 
         }
         stopReceiver();
+    }
+
+    private void messageHandler(String message){
+        String header;
+        if(message.startsWith("USER")){
+            message = message.substring(message.indexOf("{"));
+            header = "USER";
+        }
+        else {
+            JSONObject json = new JSONObject(message);
+            header = json.get("type").toString();
+        }
+        switch (header){
+            case fileInfo:
+                receiveFile(gson.fromJson(message,FileMessage.class));
+                break;
+            case messageInfo:
+                showMessage(gson.fromJson(message,TextMessage.class));
+                break;
+            case serviceInfo:
+                serviceHandler(gson.fromJson(message,ServiceMessage.class));
+                break;
+            case "USER":
+                Main.user = gson.fromJson(message,User.class);
+                break;
+        }
+    }
+
+    private void showMessage(TextMessage message){
+        gui.getChatWindow().append(message.getSender_nickname() +
+                ": " + message.getBody() + "\n");
+    }
+
+    private void serviceHandler(ServiceMessage message){
+        switch (message.getHeader()){
+            case loginInfo:
+                Main.loginForm.getInformation(message.getStatus());
+                break;
+            default:
+                System.out.println(message.getHeader() + " " + message.getStatus());
+        }
+    }
+
+    public void receiveFile(FileMessage fileMessage){
+        try {
+            //получаем размер файла
+            long size = fileMessage.getSize();
+            System.out.println("Размер файла: " + size);
+            //объявляем размер пакета
+            byte [] bytes = new byte[8192];
+            //устанавливаем файл на запись
+            File file = new File(new StringBuffer().
+                    append(Main.file_directory).
+                    append(fileMessage.getFileType()).
+                    append("//").
+                    append(new Random().nextInt()).toString());
+            file.createNewFile();
+            if(file.exists()){
+                System.out.println("Файл существует");
+            }
+            else
+                System.out.println("Файл не существует");
+            //запускаем поток записи в файл
+            FileOutputStream fileWriter = new FileOutputStream(file);
+            //объявляем поток откуда пойдут данные
+            BufferedInputStream bis = new BufferedInputStream(Main.serverSocket.getInputStream());
+            int i;
+            //считываем данные пока они не закончатся
+            while (size>0){
+                i = bis.read(bytes);
+                fileWriter.write(bytes,0,i);
+                size-=i;
+            }
+            fileWriter.close();
+        }
+        catch (IOException ex) {
+            System.out.println("receive file: " + ex.getMessage());
+        }
     }
 
     public void stopReceiver(){
