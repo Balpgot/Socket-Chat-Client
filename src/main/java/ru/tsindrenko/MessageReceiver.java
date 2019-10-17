@@ -1,9 +1,12 @@
 package ru.tsindrenko;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.List;
 import java.util.Random;
 
 public class MessageReceiver extends Thread {
@@ -19,6 +22,8 @@ public class MessageReceiver extends Thread {
     private final String wrongPassword = "WRONG_PASSWORD";
     private final String loginIsOccupied = "LOGIN_IS_OCCUPIED";
     private final String userIsLogged = "USER_IS_LOGGED";
+    private final String chatroomInfo = "CHATROOM";
+    private final String userInfo = "USER";
 
     private BufferedReader in; // поток чтения из сокета
     private boolean isActive;
@@ -39,6 +44,7 @@ public class MessageReceiver extends Thread {
         try {
             while (true) {
                 str = in.readLine(); // ждем сообщения с сервера
+                System.out.println("Пришло сообщение: "  +str);
                 messageHandler(str);
             }
         } catch (IOException e) {
@@ -49,13 +55,13 @@ public class MessageReceiver extends Thread {
 
     private void messageHandler(String message){
         String header;
-        if(message.startsWith("USER")){
-            message = message.substring(message.indexOf("{"));
-            header = "USER";
-        }
-        else {
-            JSONObject json = new JSONObject(message);
+        JSONObject json;
+        try {
+            json = new JSONObject(message);
             header = json.get("type").toString();
+        }
+        catch (JSONException ex){
+            header = chatroomInfo;
         }
         switch (header){
             case fileInfo:
@@ -67,9 +73,11 @@ public class MessageReceiver extends Thread {
             case serviceInfo:
                 serviceHandler(gson.fromJson(message,ServiceMessage.class));
                 break;
-            case "USER":
+            case userInfo:
                 Main.user = gson.fromJson(message,User.class);
                 break;
+            case chatroomInfo:
+                gui.fillChatroomList(gson.fromJson(message,new TypeToken<List<ChatRoom>>() {}.getType()));
         }
     }
 
@@ -81,7 +89,7 @@ public class MessageReceiver extends Thread {
     private void serviceHandler(ServiceMessage message){
         switch (message.getHeader()){
             case loginInfo:
-                Main.loginForm.getInformation(message.getStatus());
+                Main.loginForm.getLoginInformation(message.getStatus());
                 break;
             default:
                 System.out.println(message.getHeader() + " " + message.getStatus());

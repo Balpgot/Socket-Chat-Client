@@ -17,6 +17,14 @@ public class TextMessage {
         this.sender_nickname = Main.user.getNickname();
     }
 
+    public TextMessage(String body, int sender_id, int chatroom_id, int user_id) {
+        this.body = body;
+        this.sender_id = sender_id;
+        this.chatroom_id = chatroom_id;
+        this.user_id = user_id;
+        this.sender_nickname = Main.user.getNickname();
+    }
+
     public String getType() {
         return type;
     }

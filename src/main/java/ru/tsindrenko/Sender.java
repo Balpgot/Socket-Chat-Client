@@ -11,6 +11,7 @@ public class Sender {
     private static BufferedWriter out = Main.out;
     private static HashSet<String> swearWords = new HashSet<>();
     private static HashMap<String,String> tranliteration = new HashMap<>();
+    private static HashMap<Integer,String> chatrooms = new HashMap<>();
     private static final String avatar = "avatar";
     private static final String fileType = "file";
     private static Gson gson = new Gson();
@@ -72,5 +73,13 @@ public class Sender {
         catch (IOException ex){
             System.out.println("sendFile: " + ex.getMessage());
         }
+    }
+
+    public static HashMap<Integer, String> getChatrooms() {
+        return chatrooms;
+    }
+
+    public static void setChatrooms(HashMap<Integer, String> chatrooms) {
+        Sender.chatrooms = chatrooms;
     }
 }

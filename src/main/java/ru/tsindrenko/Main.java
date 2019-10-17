@@ -2,6 +2,7 @@ package ru.tsindrenko;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class Main {
     static Socket serverSocket; //сокет для общения
@@ -14,9 +15,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         serverSocket = new Socket("localhost", port);
-        System.out.println("Подключено");
-        in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream())); // читать соообщения с сервера
-        out = new BufferedWriter(new OutputStreamWriter(serverSocket.getOutputStream())); // писать на сервер
+        System.out.println("Connected");
+        in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream(), StandardCharsets.UTF_8)); // читать соообщения с сервера
+        out = new BufferedWriter(new OutputStreamWriter(serverSocket.getOutputStream(),StandardCharsets.UTF_8)); // писать на сервер
         GUI gui = new GUI();
         loginForm = new LoginForm(gui);
         MessageReceiver messageReceiver = new MessageReceiver(in, gui);
