@@ -3,25 +3,27 @@ package ru.tsindrenko;
 import com.google.gson.Gson;
 
 import javax.swing.*;
-import javax.swing.event.MouseInputListener;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GUI extends JFrame {
     private JPanel rootPanel;
-    private JTextArea chatWindow;
-    private JList chatroomList;
+    private JTabbedPane tabbedPanel;
     private JButton sendButton;
     private JTextField inputMessageField;
     private JButton sendFileButton;
-    private JScrollPane chatScrollPane;
-    private JScrollPane chatroomScroll;
+    private JTextArea chatWindow;
+    private JList chatroomList;
+    private JPanel chatPanel;
+    private JPanel accountPanel;
+    private JPanel contactsPanel;
+    private JScrollPane chatScroll;
+    private JScrollPane chatListScroll;
     private Gson gson;
 
 
@@ -29,10 +31,12 @@ public class GUI extends JFrame {
         setContentPane(rootPanel);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         ButtonEventListener buttonEventListener = new ButtonEventListener();
+        ListEventListener listSelectionListener = new ListEventListener();
         setLocation(700, 350);
         setSize(600, 400);
         sendButton.addActionListener(buttonEventListener);
         sendFileButton.addActionListener(buttonEventListener);
+        chatroomList.addListSelectionListener(listSelectionListener);
         gson = new Gson();
     }
 
@@ -52,28 +56,40 @@ public class GUI extends JFrame {
      */
     private void $$$setupUI$$$() {
         rootPanel = new JPanel();
-        rootPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
+        rootPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        tabbedPanel = new JTabbedPane();
+        rootPanel.add(tabbedPanel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+        chatPanel = new JPanel();
+        chatPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
+        tabbedPanel.addTab("Чат", chatPanel);
+        inputMessageField = new JTextField();
+        inputMessageField.setText("");
+        chatPanel.add(inputMessageField, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(302, 30), null, 0, false));
         sendButton = new JButton();
         sendButton.setText("Отправить");
-        rootPanel.add(sendButton, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(302, 30), null, 0, false));
-        inputMessageField = new JTextField();
-        rootPanel.add(inputMessageField, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(302, 30), null, 0, false));
+        chatPanel.add(sendButton, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(302, 30), null, 0, false));
         sendFileButton = new JButton();
         sendFileButton.setText("Отправить файл");
-        rootPanel.add(sendFileButton, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        chatScrollPane = new JScrollPane();
-        rootPanel.add(chatScrollPane, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(302, 17), null, 0, false));
+        chatPanel.add(sendFileButton, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chatScroll = new JScrollPane();
+        chatPanel.add(chatScroll, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         chatWindow = new JTextArea();
         chatWindow.setEditable(false);
-        chatScrollPane.setViewportView(chatWindow);
-        chatroomScroll = new JScrollPane();
-        rootPanel.add(chatroomScroll, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        chatWindow.setText("");
+        chatScroll.setViewportView(chatWindow);
+        chatListScroll = new JScrollPane();
+        chatListScroll.putClientProperty("html.disable", Boolean.FALSE);
+        chatPanel.add(chatListScroll, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         chatroomList = new JList();
         final DefaultListModel defaultListModel1 = new DefaultListModel();
         chatroomList.setModel(defaultListModel1);
-        chatroomScroll.setViewportView(chatroomList);
-        final JToolBar.Separator toolBar$Separator1 = new JToolBar.Separator();
-        rootPanel.add(toolBar$Separator1, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chatListScroll.setViewportView(chatroomList);
+        accountPanel = new JPanel();
+        accountPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        tabbedPanel.addTab("Аккаунт", accountPanel);
+        contactsPanel = new JPanel();
+        contactsPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        tabbedPanel.addTab("Контакты", contactsPanel);
     }
 
     /**
@@ -86,23 +102,50 @@ public class GUI extends JFrame {
     class ButtonEventListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(sendButton) && !inputMessageField.getText().isEmpty()) {
-                TextMessage textMessage = new TextMessage(Sender.modifyText(inputMessageField.getText()), Main.user.getId(), 0, -1);
+                TextMessage textMessage = new TextMessage(Sender.modifyText(inputMessageField.getText()), Main.user.getId(), Main.messageReceiver.getCurrentChatID(), -1);
                 Sender.sendMessage(gson.toJson(textMessage));
                 inputMessageField.setText("");
             }
             if (e.getSource().equals(sendFileButton)) {
-                File file = new File("C://test.txt");
-                Sender.sendFile(file);
+                JFileChooser fileopen = new JFileChooser();
+                int ret = fileopen.showDialog(null, "Выбрать файл");
+                if (ret == JFileChooser.APPROVE_OPTION) {
+                    File file = fileopen.getSelectedFile();
+                    Sender.sendFile(file, false);
+                }
+            }
+        }
+    }
+
+    class ListEventListener implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                System.out.println("Сменился чат" + chatroomList.getSelectedValue());
+                int chatID = Main.databaseConnector.getChatroomID(chatroomList.getSelectedValue().toString());
+                Main.messageReceiver.setCurrentChatID(chatID);
+                chatWindow.setText("");
+                List<String> oldMessages = Main.databaseConnector.getMessages(chatID, true);
+                for (String message : oldMessages) {
+                    chatWindow.append(message);
+                }
+                if (Main.messageQueue.containsKey(chatID)) {
+                    chatWindow.append("*-----Новые сообщения-----*\n");
+                    List<String> queuedMessages = Main.messageQueue.get(chatID);
+                    for (String message : queuedMessages) {
+                        chatWindow.append(message);
+                    }
+                    Main.messageQueue.remove(chatID);
+                    Main.databaseConnector.setChatMessageRead(chatID);
+                }
             }
         }
     }
 
 
-    public void fillChatroomList(List<ChatRoom> chatrooms) {
+    public void fillChatroomList(List<Integer> chatrooms) {
         List<String> chatroomNames = new ArrayList<>();
-        for (ChatRoom chatroom : chatrooms) {
-            Sender.getChatrooms().put(chatroom.getId(), chatroom.getName());
-            chatroomNames.add(chatroom.getName());
+        for (Integer chatroom : chatrooms) {
+            chatroomNames.add(Main.databaseConnector.getChatroomName(chatroom));
         }
         chatroomList.setListData(chatroomNames.toArray());
     }
@@ -110,6 +153,11 @@ public class GUI extends JFrame {
 
     public JTextArea getChatWindow() {
         return chatWindow;
+    }
+
+    class TabChangeListener implements ChangeListener {
+        public void stateChanged(ChangeEvent e) {
+        }
     }
 
 }

@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -27,6 +28,7 @@ public class MessageReceiver extends Thread {
 
     private BufferedReader in; // поток чтения из сокета
     private boolean isActive;
+    private int currentChatID;
     private GUI gui;
     private Gson gson = new Gson();
 
@@ -35,6 +37,7 @@ public class MessageReceiver extends Thread {
         this.in = in;
         this.isActive = true;
         this.gui = gui;
+        this.currentChatID = 1;
         start();
     }
 
@@ -77,13 +80,35 @@ public class MessageReceiver extends Thread {
                 Main.user = gson.fromJson(message,User.class);
                 break;
             case chatroomInfo:
-                gui.fillChatroomList(gson.fromJson(message,new TypeToken<List<ChatRoom>>() {}.getType()));
+                gui.fillChatroomList(gson.fromJson(message,new TypeToken<List<Integer>>() {}.getType()));
         }
     }
 
     private void showMessage(TextMessage message){
-        gui.getChatWindow().append(message.getSender_nickname() +
-                ": " + message.getBody() + "\n");
+        if(Main.databaseConnector.getChatroomName(message.getChatroom_id())==null){
+            Main.databaseConnector.addChatroom(message.getChatroom_id(),message.getSender_nickname());
+        }
+        if(message.getChatroom_id()==currentChatID){
+            Main.databaseConnector.addMessageToHistory(
+                    message.getBody(),message.getSender_id(),message.getChatroom_id(),
+                    message.getUser_id(),message.getSender_nickname(),true);
+            gui.getChatWindow().append(message.getSender_nickname() +
+                    ": " + message.getBody() + "\n");
+        }
+        else{
+            Main.databaseConnector.addMessageToHistory(
+                    message.getBody(),message.getSender_id(),message.getChatroom_id(),
+                    message.getUser_id(),message.getSender_nickname(),false);
+            String finalMessage = message.getSender_nickname() + ": " + message.getBody() + "\n";
+            if(Main.messageQueue.containsKey(message.getChatroom_id())){
+                Main.messageQueue.get(message.getChatroom_id()).add(finalMessage);
+            }
+            else{
+                List<String> queue = new ArrayList<>();
+                queue.add(finalMessage);
+                Main.messageQueue.put(message.getChatroom_id(),queue);
+            }
+        }
     }
 
     private void serviceHandler(ServiceMessage message){
@@ -108,7 +133,7 @@ public class MessageReceiver extends Thread {
                     append(Main.file_directory).
                     append(fileMessage.getFileType()).
                     append("//").
-                    append(new Random().nextInt()).toString());
+                    append(fileMessage.getFileName()).toString());
             file.createNewFile();
             if(file.exists()){
                 System.out.println("Файл существует");
@@ -141,5 +166,13 @@ public class MessageReceiver extends Thread {
         catch (IOException ex){
             System.out.println(ex.getMessage());
         }
+    }
+
+    public int getCurrentChatID() {
+        return currentChatID;
+    }
+
+    public void setCurrentChatID(int currentChatID) {
+        this.currentChatID = currentChatID;
     }
 }

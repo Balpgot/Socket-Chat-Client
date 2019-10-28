@@ -9,8 +9,8 @@ import java.util.HashSet;
 public class Sender {
 
     private static BufferedWriter out = Main.out;
-    private static HashSet<String> swearWords = new HashSet<>();
-    private static HashMap<String,String> tranliteration = new HashMap<>();
+    private static HashSet<String> swearWords = Main.databaseConnector.getBadWords();
+    private static HashMap<String,String> tranliteration = Main.databaseConnector.getTranslit();
     private static HashMap<Integer,String> chatrooms = new HashMap<>();
     private static final String avatar = "avatar";
     private static final String fileType = "file";
@@ -51,14 +51,19 @@ public class Sender {
     }
 
     //метод отправки файла
-    public static void sendFile(File file){
+    public static void sendFile(File file, boolean is_avatar){
         try {
             //определяем размер пакета и открываем файл на чтение
             byte[] byteArray = new byte[8192];
             FileInputStream fis = new FileInputStream(file.getPath());
             //отправляем серверу размер файла
             long size = file.length();
-            FileMessage fileMessage = new FileMessage(size,fileType);
+            FileMessage fileMessage;
+            if(is_avatar){
+                fileMessage = new FileMessage(size,avatar,file.getName());
+            }
+            else
+                fileMessage = new FileMessage(size,fileType,file.getName());
             sendMessage(gson.toJson(fileMessage));
             System.out.println("Начинаю оправлять");
             BufferedOutputStream bos = new BufferedOutputStream(Main.serverSocket.getOutputStream());

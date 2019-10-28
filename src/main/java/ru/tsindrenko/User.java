@@ -6,11 +6,18 @@ public class User {
     private String nickname;
     private String login;
     private String password;
+    private String avatar;
 
     User(String login, String password, String nickname){
         this.nickname = nickname;
         this.login = login;
         this.password = password;
+    }
+
+    User(int id, String name, String avatar){
+        this.id = id;
+        this.nickname = name;
+        this.avatar = avatar;
     }
 
     //геттеры и сеттеры
@@ -45,5 +52,13 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

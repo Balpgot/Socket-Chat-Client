@@ -3,6 +3,8 @@ package ru.tsindrenko;
 import com.google.gson.Gson;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,6 +51,7 @@ public class LoginForm extends JFrame {
         setLocation(850, 350);
         setSize(300, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        tabsPanel.addChangeListener(new TabChangeListener());
         //настройки входа
         loginPanel.setVisible(true);
         loginMessage.setVisible(false);
@@ -56,6 +59,10 @@ public class LoginForm extends JFrame {
         LoginButtonEventListener buttonEventListener = new LoginButtonEventListener();
         submitButton.addActionListener(buttonEventListener);
         //настройки регистрации
+        loginInputR.setEditable(false);
+        passwordInputR.setEditable(false);
+        nicknameInputR.setEditable(false);
+        submitRegistrationButton.setEnabled(false);
         registrationPanel.setVisible(true);
         loginMessageR.setVisible(false);
         passwordMessageR.setVisible(false);
@@ -65,6 +72,31 @@ public class LoginForm extends JFrame {
     }
 
     //общие методы
+
+    class TabChangeListener implements ChangeListener {
+        public void stateChanged(ChangeEvent e) {
+            switch (tabsPanel.getSelectedIndex()) {
+                case 0:
+                    loginInputR.setEditable(false);
+                    passwordInputR.setEditable(false);
+                    nicknameInputR.setEditable(false);
+                    submitRegistrationButton.setEnabled(false);
+                    loginInput.setEditable(true);
+                    passwordInput.setEditable(true);
+                    submitButton.setEnabled(true);
+                    break;
+                case 1:
+                    loginInput.setEditable(false);
+                    passwordInput.setEditable(false);
+                    submitButton.setEnabled(false);
+                    loginInputR.setEditable(true);
+                    passwordInputR.setEditable(true);
+                    nicknameInputR.setEditable(true);
+                    submitRegistrationButton.setEnabled(true);
+                    break;
+            }
+        }
+    }
 
     private String passwordToString(char[] password) {
         StringBuffer sb = new StringBuffer();
