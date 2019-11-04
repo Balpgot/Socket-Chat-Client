@@ -7,37 +7,88 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class GUI extends JFrame {
+    //основа
     private JPanel rootPanel;
     private JTabbedPane tabbedPanel;
+    private Gson gson;
+    //чат
     private JButton sendButton;
     private JTextField inputMessageField;
     private JButton sendFileButton;
     private JTextArea chatWindow;
     private JList chatroomList;
     private JPanel chatPanel;
+    private HashSet<String> chatrooms;
+    //аккаунт
     private JPanel accountPanel;
+    //контакты-создать чат
     private JPanel contactsPanel;
     private JScrollPane chatScroll;
     private JScrollPane chatListScroll;
-    private Gson gson;
-
+    private JTextField nameTextField;
+    private JButton createButton;
+    private JCheckBox checkBoxDialog;
+    private JLabel chatroomName;
+    private JList participantsList;
+    private JScrollPane participantsScroll;
+    private JScrollPane searchScroll;
+    private JLabel participantsLabel;
+    private JButton makeParticipantButton;
+    private HashMap<Integer, String> participants;
+    private HashMap<String, Integer> searchResults;
+    //контакты-найти пользователя
+    private JList findList;
+    private JTextField findTextField;
+    private JLabel findLabel;
+    private JButton findButton;
+    //cлушатели
+    ButtonEventListener buttonEventListener;
+    ListEventListener listSelectionListener;
+    KeyboardListener keyboardListener;
+    //константы
+    private final String userInfo = "USER";
+    private final String chatroomInfo = "CHATROOM";
+    private final String getRequest = "GET";
+    private final String updateRequest = "UPDATE";
+    private final String deleteRequest = "DELETE";
+    private final String createRequest = "CREATE";
 
     GUI() {
+        //основные настройки
         setContentPane(rootPanel);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        ButtonEventListener buttonEventListener = new ButtonEventListener();
-        ListEventListener listSelectionListener = new ListEventListener();
         setLocation(700, 350);
         setSize(600, 400);
+        tabbedPanel.addChangeListener(new TabGUIChangeListener());
+        gson = new Gson();
+        //слушатели событий
+        buttonEventListener = new ButtonEventListener();
+        listSelectionListener = new ListEventListener();
+        keyboardListener = new KeyboardListener();
+        //настройки чата
         sendButton.addActionListener(buttonEventListener);
         sendFileButton.addActionListener(buttonEventListener);
         chatroomList.addListSelectionListener(listSelectionListener);
-        gson = new Gson();
+        inputMessageField.setFocusable(true);
+        inputMessageField.addKeyListener(keyboardListener);
+        //настройки контактов
+        findList.addListSelectionListener(listSelectionListener);
+        participantsList.addListSelectionListener(listSelectionListener);
+        makeParticipantButton.addActionListener(buttonEventListener);
+        findButton.addActionListener(buttonEventListener);
+        createButton.addActionListener(buttonEventListener);
+        participants = new HashMap<>();
+        searchResults = new HashMap<>();
+        chatrooms = new HashSet<>();
     }
 
     {
@@ -88,8 +139,44 @@ public class GUI extends JFrame {
         accountPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("Аккаунт", accountPanel);
         contactsPanel = new JPanel();
-        contactsPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        contactsPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(7, 4, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("Контакты", contactsPanel);
+        searchScroll = new JScrollPane();
+        contactsPanel.add(searchScroll, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 2, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        findList = new JList();
+        final DefaultListModel defaultListModel2 = new DefaultListModel();
+        findList.setModel(defaultListModel2);
+        searchScroll.setViewportView(findList);
+        chatroomName = new JLabel();
+        chatroomName.setText("Название чата:");
+        contactsPanel.add(chatroomName, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        findTextField = new JTextField();
+        contactsPanel.add(findTextField, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        participantsScroll = new JScrollPane();
+        contactsPanel.add(participantsScroll, new com.intellij.uiDesigner.core.GridConstraints(3, 3, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        participantsList = new JList();
+        participantsScroll.setViewportView(participantsList);
+        participantsLabel = new JLabel();
+        participantsLabel.setText("Список участников:");
+        contactsPanel.add(participantsLabel, new com.intellij.uiDesigner.core.GridConstraints(2, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        findButton = new JButton();
+        findButton.setText("Найти");
+        contactsPanel.add(findButton, new com.intellij.uiDesigner.core.GridConstraints(5, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        createButton = new JButton();
+        createButton.setText("Создать");
+        contactsPanel.add(createButton, new com.intellij.uiDesigner.core.GridConstraints(6, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        checkBoxDialog = new JCheckBox();
+        checkBoxDialog.setText("Диалог");
+        contactsPanel.add(checkBoxDialog, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        nameTextField = new JTextField();
+        contactsPanel.add(nameTextField, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        findLabel = new JLabel();
+        findLabel.setText("Поиск");
+        contactsPanel.add(findLabel, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        makeParticipantButton = new JButton();
+        makeParticipantButton.setEnabled(true);
+        makeParticipantButton.setText("<>");
+        contactsPanel.add(makeParticipantButton, new com.intellij.uiDesigner.core.GridConstraints(3, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(60, 60), new Dimension(60, 60), new Dimension(60, 60), 0, false));
     }
 
     /**
@@ -102,62 +189,196 @@ public class GUI extends JFrame {
     class ButtonEventListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(sendButton) && !inputMessageField.getText().isEmpty()) {
-                TextMessage textMessage = new TextMessage(Sender.modifyText(inputMessageField.getText()), Main.user.getId(), Main.messageReceiver.getCurrentChatID(), -1);
+                Integer currentId = Main.messageReceiver.getCurrentChatID();
+                TextMessage textMessage = new TextMessage(Sender.modifyText(inputMessageField.getText()), Main.user.getId(), Main.user.getNickname(), currentId, Main.databaseConnector.getChatroomName(currentId));
+                System.out.println(textMessage);
                 Sender.sendMessage(gson.toJson(textMessage));
                 inputMessageField.setText("");
-            }
-            if (e.getSource().equals(sendFileButton)) {
+            } else if (e.getSource().equals(sendFileButton)) {
                 JFileChooser fileopen = new JFileChooser();
                 int ret = fileopen.showDialog(null, "Выбрать файл");
                 if (ret == JFileChooser.APPROVE_OPTION) {
                     File file = fileopen.getSelectedFile();
                     Sender.sendFile(file, false);
                 }
+            } else if (e.getSource().equals(makeParticipantButton)) {
+                updateParticipants();
+            } else if (e.getSource().equals(createButton)) {
+                createChatroom();
+            } else if (e.getSource().equals(findButton)) {
+                findUsers();
             }
+
         }
     }
 
-    class ListEventListener implements ListSelectionListener {
-        public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                System.out.println("Сменился чат" + chatroomList.getSelectedValue());
-                int chatID = Main.databaseConnector.getChatroomID(chatroomList.getSelectedValue().toString());
-                Main.messageReceiver.setCurrentChatID(chatID);
-                chatWindow.setText("");
-                List<String> oldMessages = Main.databaseConnector.getMessages(chatID, true);
-                for (String message : oldMessages) {
-                    chatWindow.append(message);
-                }
-                if (Main.messageQueue.containsKey(chatID)) {
-                    chatWindow.append("*-----Новые сообщения-----*\n");
-                    List<String> queuedMessages = Main.messageQueue.get(chatID);
-                    for (String message : queuedMessages) {
-                        chatWindow.append(message);
+    public void clearChatroomCreation() {
+        chatrooms.add(nameTextField.getText());
+        chatroomList.removeListSelectionListener(listSelectionListener);
+        chatroomList.setListData(chatrooms.toArray());
+        chatroomList.addListSelectionListener(listSelectionListener);
+        chatroomList.setSelectedValue(nameTextField.getText(), false);
+        tabbedPanel.setSelectedComponent(chatPanel);
+        Main.messageReceiver.setCurrentChatID(Main.databaseConnector.getChatroomID(nameTextField.getText()));
+        createButton.setEnabled(true);
+        nameTextField.setText("");
+        checkBoxDialog.setSelected(false);
+        participants.clear();
+        participantsList.setListData(participants.values().toArray());
+        findTextField.setText("");
+        searchResults.clear();
+        findList.setListData(searchResults.keySet().toArray());
+    }
+
+    public void createChatroom() {
+        if (participants.size() < 2) {
+            JOptionPane.showMessageDialog(null, "Нельзя создать комнату без собеседников");
+        } else if (nameTextField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Название чата не должно быть пустым");
+        } else {
+            ChatRoom chatRoom = new ChatRoom(nameTextField.getText(), Main.user.getId(), checkBoxDialog.isSelected());
+            chatRoom.getParticipants_id().addAll(participants.keySet());
+            Sender.sendMessage(gson.toJson(new RequestMessage(chatroomInfo, createRequest, chatRoom)));
+            createButton.setEnabled(false);
+        }
+    }
+
+    public void findUsers() {
+        if (!findTextField.getText().isEmpty()) {
+            Sender.sendMessage(gson.toJson(new RequestMessage(userInfo, getRequest, findTextField.getText())));
+        }
+    }
+
+    public void updateParticipants() {
+        JList currentList = null;
+        //обозначить текущий список
+        if (findList.getSelectedValue() != null) {
+            currentList = findList;
+        } else if (participantsList.getSelectedValue() != null) {
+            currentList = participantsList;
+        } else {
+            JOptionPane.showMessageDialog(null, "Выберите пользователя из списка");
+        }
+
+        //если пользователь выбран
+        if (currentList != null) {
+            //удалить из списка участников
+            if (currentList.equals(participantsList)) {
+                if (currentList.getSelectedValue().toString().equals(Main.user.getNickname())) {
+                    JOptionPane.showMessageDialog(null, "Нельзя удалить себя из участников");
+                } else {
+                    participants.remove(searchResults.get(currentList.getSelectedValue().toString()));
+                    participantsList.setListData(participants.values().toArray());
+                    if (participants.size() <= 2) {
+                        checkBoxDialog.setEnabled(true);
                     }
-                    Main.messageQueue.remove(chatID);
-                    Main.databaseConnector.setChatMessageRead(chatID);
+                }
+            }
+            //проверить, нет ли пользователя в списках
+            else if (participants.values().contains(currentList.getSelectedValue().toString())) {
+                JOptionPane.showMessageDialog(null, "Пользователь уже добавлен в участники");
+            }
+
+            //добавить пользователя
+            else {
+                participants.put(searchResults.get(currentList.getSelectedValue().toString()), currentList.getSelectedValue().toString());
+                participantsList.setListData(participants.values().toArray());
+                if (participants.size() > 2) {
+                    checkBoxDialog.setEnabled(false);
+                    checkBoxDialog.setSelected(false);
                 }
             }
         }
     }
-
 
     public void fillChatroomList(List<Integer> chatrooms) {
         List<String> chatroomNames = new ArrayList<>();
         for (Integer chatroom : chatrooms) {
             chatroomNames.add(Main.databaseConnector.getChatroomName(chatroom));
         }
+        this.chatrooms.addAll(chatroomNames);
+        System.out.println(this.chatrooms);
         chatroomList.setListData(chatroomNames.toArray());
     }
 
+    public void fillSearchList(HashMap<String, Integer> users) {
+        findList.setListData(users.keySet().toArray());
+        searchResults.putAll(users);
+    }
 
     public JTextArea getChatWindow() {
         return chatWindow;
     }
 
-    class TabChangeListener implements ChangeListener {
-        public void stateChanged(ChangeEvent e) {
+    public HashMap<Integer, String> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(HashMap<Integer, String> participants) {
+        this.participants = participants;
+    }
+
+    class ListEventListener implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                if (e.getSource().equals(chatroomList)) {
+                    System.out.println("Сменился чат" + chatroomList.getSelectedValue());
+                    int chatID = Main.databaseConnector.getChatroomID(chatroomList.getSelectedValue().toString());
+                    Main.messageReceiver.setCurrentChatID(chatID);
+                    chatWindow.setText("");
+                    List<String> oldMessages = Main.databaseConnector.getMessages(chatID, true);
+                    for (String message : oldMessages) {
+                        chatWindow.append(message);
+                    }
+                    if (Main.messageQueue.containsKey(chatID)) {
+                        chatWindow.append("*-----Новые сообщения-----*\n");
+                        List<String> queuedMessages = Main.messageQueue.get(chatID);
+                        for (String message : queuedMessages) {
+                            chatWindow.append(message);
+                        }
+                        Main.messageQueue.remove(chatID);
+                        Main.databaseConnector.setChatMessageRead(chatID);
+                    }
+                }
+                if (e.getSource().equals(findList)) {
+                    participantsList.clearSelection();
+                } else if (e.getSource().equals(participantsList)) {
+                    findList.clearSelection();
+                }
+            }
         }
     }
+
+    class KeyboardListener implements KeyListener {
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER && !inputMessageField.getText().isEmpty()) {
+                Integer currentId = Main.messageReceiver.getCurrentChatID();
+                TextMessage textMessage = new TextMessage(Sender.modifyText(inputMessageField.getText()), Main.user.getId(), Main.user.getNickname(), currentId, Main.databaseConnector.getChatroomName(currentId));
+                Sender.sendMessage(gson.toJson(textMessage));
+                inputMessageField.setText("");
+            }
+        }
+    }
+
+    class TabGUIChangeListener implements ChangeListener {
+        public void stateChanged(ChangeEvent e) {
+            if (tabbedPanel.getSelectedIndex() == 2) {
+                if (participants.isEmpty()) {
+                    participants.put(Main.user.getId(), Main.user.getNickname());
+                }
+                participantsList.setListData(participants.values().toArray());
+            }
+        }
+    }
+
 
 }

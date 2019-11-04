@@ -5,26 +5,31 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MessageReceiver extends Thread {
     private final String disconnectClient = "BREAK_CONNECTION";
-    private final String accepted = "SUCCESSFUL_OPERATION";
+    private final String success = "SUCCESSFUL_OPERATION";
     private final String loginInfo = "LOGIN";
     private final String fileInfo = "FILE";
     private final String serviceInfo = "SERVICE";
     private final String messageInfo = "TEXT";
     private final String patchInfo = "PATCH_INFO";
-    private final String requestInfo = "REQUEST_INFO";
+    private final String requestInfo = "REQUEST";
+    private final String responseInfo = "RESPONSE";
     private final String userNotFound = "USER_NOT_FOUND";
     private final String wrongPassword = "WRONG_PASSWORD";
     private final String loginIsOccupied = "LOGIN_IS_OCCUPIED";
     private final String userIsLogged = "USER_IS_LOGGED";
     private final String chatroomInfo = "CHATROOM";
     private final String userInfo = "USER";
+    private final String getRequest = "GET";
+    private final String updateRequest = "UPDATE";
+    private final String deleteRequest = "DELETE";
+    private final String createRequest = "CREATE";
 
     private BufferedReader in; // поток чтения из сокета
     private boolean isActive;
@@ -78,9 +83,14 @@ public class MessageReceiver extends Thread {
                 break;
             case userInfo:
                 Main.user = gson.fromJson(message,User.class);
+                gui.getParticipants().put(Main.user.getId(), Main.user.getNickname());
                 break;
             case chatroomInfo:
                 gui.fillChatroomList(gson.fromJson(message,new TypeToken<List<Integer>>() {}.getType()));
+                break;
+            case responseInfo:
+                responseHandler(gson.fromJson(message,ResponseMessage.class));
+                break;
         }
     }
 
@@ -91,14 +101,14 @@ public class MessageReceiver extends Thread {
         if(message.getChatroom_id()==currentChatID){
             Main.databaseConnector.addMessageToHistory(
                     message.getBody(),message.getSender_id(),message.getChatroom_id(),
-                    message.getUser_id(),message.getSender_nickname(),true);
+                    Main.user.getId(),message.getSender_nickname(),true);
             gui.getChatWindow().append(message.getSender_nickname() +
                     ": " + message.getBody() + "\n");
         }
         else{
             Main.databaseConnector.addMessageToHistory(
                     message.getBody(),message.getSender_id(),message.getChatroom_id(),
-                    message.getUser_id(),message.getSender_nickname(),false);
+                    Main.user.getId(),message.getSender_nickname(),false);
             String finalMessage = message.getSender_nickname() + ": " + message.getBody() + "\n";
             if(Main.messageQueue.containsKey(message.getChatroom_id())){
                 Main.messageQueue.get(message.getChatroom_id()).add(finalMessage);
@@ -107,6 +117,48 @@ public class MessageReceiver extends Thread {
                 List<String> queue = new ArrayList<>();
                 queue.add(finalMessage);
                 Main.messageQueue.put(message.getChatroom_id(),queue);
+            }
+        }
+    }
+
+    private void showFileMessage(FileMessage message, String filePath){
+        if(message.getChatroom_id()==currentChatID){
+            Main.databaseConnector.addMessageToHistory(
+                    filePath,message.getSender_id(),message.getChatroom_id(),
+                    Main.user.getId(),message.getSender_nickname(),true);
+            gui.getChatWindow().append(message.getSender_nickname() +
+                    ": " + filePath + "\n");
+        }
+        else{
+            Main.databaseConnector.addMessageToHistory(
+                    filePath,message.getSender_id(),message.getChatroom_id(),
+                    Main.user.getId(),message.getSender_nickname(),false);
+            String finalMessage = message.getSender_nickname() + ": " + filePath + "\n";
+            if(Main.messageQueue.containsKey(message.getChatroom_id())){
+                Main.messageQueue.get(message.getChatroom_id()).add(finalMessage);
+            }
+            else{
+                List<String> queue = new ArrayList<>();
+                queue.add(finalMessage);
+                Main.messageQueue.put(message.getChatroom_id(),queue);
+            }
+        }
+    }
+
+    private void responseHandler(ResponseMessage message){
+        if(message.getClassType().equals(userInfo)){
+            if(message.getStatus().equals(success) && message.getAction().equals(getRequest)){
+                gui.fillSearchList(message.getBody());
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Произошла ошибка, попробуйте снова.");
+            }
+        }
+        if(message.getClassType().equals(chatroomInfo)){
+            if(message.getStatus().equals(success) && message.getAction().equals(createRequest)){
+                JOptionPane.showMessageDialog(null, "Чат успешно создан");
+                Main.databaseConnector.addChatroom(message.getChatRoom().getId(),message.getChatRoom().getName());
+                gui.clearChatroomCreation();
             }
         }
     }
@@ -123,6 +175,9 @@ public class MessageReceiver extends Thread {
 
     public void receiveFile(FileMessage fileMessage){
         try {
+            if(Main.databaseConnector.getChatroomName(fileMessage.getChatroom_id())==null){
+                Main.databaseConnector.addChatroom(fileMessage.getChatroom_id(),fileMessage.getSender_nickname());
+            }
             //получаем размер файла
             long size = fileMessage.getSize();
             System.out.println("Размер файла: " + size);
@@ -152,10 +207,12 @@ public class MessageReceiver extends Thread {
                 size-=i;
             }
             fileWriter.close();
+            showFileMessage(fileMessage,file.getPath());
         }
         catch (IOException ex) {
             System.out.println("receive file: " + ex.getMessage());
         }
+
     }
 
     public void stopReceiver(){

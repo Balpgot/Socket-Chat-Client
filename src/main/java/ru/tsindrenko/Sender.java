@@ -60,10 +60,14 @@ public class Sender {
             long size = file.length();
             FileMessage fileMessage;
             if(is_avatar){
-                fileMessage = new FileMessage(size,avatar,file.getName());
+                fileMessage = new FileMessage(size,avatar,file.getName(),Main.user.getId(),
+                        Main.user.getNickname(),Main.messageReceiver.getCurrentChatID(),
+                chatrooms.get(Main.messageReceiver.getCurrentChatID()));
             }
             else
-                fileMessage = new FileMessage(size,fileType,file.getName());
+                fileMessage = new FileMessage(size,fileType,file.getName(),Main.user.getId(),
+                        Main.user.getNickname(),Main.messageReceiver.getCurrentChatID(),
+                        chatrooms.get(Main.messageReceiver.getCurrentChatID()));
             sendMessage(gson.toJson(fileMessage));
             System.out.println("Начинаю оправлять");
             BufferedOutputStream bos = new BufferedOutputStream(Main.serverSocket.getOutputStream());

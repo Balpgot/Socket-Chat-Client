@@ -134,6 +134,7 @@ public class DatabaseConnector {
         try {
             if(chatroomDB.next()){
                 name = chatroomDB.getString(1);
+                System.out.println(name);
             }
             else{
                 chatroomDB.close();
@@ -214,6 +215,7 @@ public class DatabaseConnector {
             statement = connection.createStatement();
             statement.executeUpdate("INSERT INTO Chatrooms (Chatrooms.id,Chatrooms.name,Chatrooms.is_deleted) VALUES ('" +
                     id + "','" + name + "'," + "'0')");
+            Sender.getChatrooms().put(id,name);
             statement.close();
         }
         catch (SQLException ex){
@@ -228,6 +230,7 @@ public class DatabaseConnector {
         }
         else
             query+="'0'";
+        query+=" AND user_id='"+Main.user.getId()+"'";
         ResultSet messagesResult = executeQuery(query);
         List<String> oldMessages = new ArrayList<>();
         try {
@@ -255,11 +258,8 @@ public class DatabaseConnector {
             }
             else
                 query+="0')";
-            System.out.println(query);
             statement.executeUpdate(query);
             statement.close();
-            System.out.println("Message added to history");
-            System.out.println(body);
         }
         catch (SQLException ex){
             ex.printStackTrace();
@@ -282,7 +282,8 @@ public class DatabaseConnector {
         Statement statement;
         try {
             statement = connection.createStatement();
-            statement.executeUpdate("UPDATE Message_history SET is_read=1 WHERE chatroom_id='"+chat_id+"'");
+            String query = "UPDATE Message_history SET is_read=1 WHERE chatroom_id='"+chat_id+"' AND user_id='"+Main.user.getId()+"'";
+            statement.executeUpdate(query);
             statement.close();
         }
         catch (SQLException ex){
