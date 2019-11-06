@@ -186,7 +186,7 @@ public class GUI extends JFrame {
         return rootPanel;
     }
 
-    public void sendMessageToSender(){
+    public void sendMessageToSender() {
         int currentId = Main.messageReceiver.getCurrentChatID();
         TextMessage textMessage = new TextMessage(Sender.modifyText(inputMessageField.getText()), Main.user.getId(), Main.user.getNickname(), currentId, Main.databaseConnector.getChatroomName(currentId));
         Sender.sendMessage(gson.toJson(textMessage, TextMessage.class));
@@ -235,6 +235,7 @@ public class GUI extends JFrame {
         chatroomList.setListData(chatrooms.toArray());
         chatroomList.addListSelectionListener(listSelectionListener);
         chatroomList.setSelectedValue(nameTextField.getText(), true);
+
     }
 
     public void createChatroom() {

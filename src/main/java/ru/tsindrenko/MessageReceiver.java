@@ -62,6 +62,7 @@ public class MessageReceiver extends Thread {
     }
 
     private void messageHandler(String message){
+        System.out.println("Пришло сообщение: " + message);
         String header;
         JSONObject json;
         try {
@@ -96,6 +97,7 @@ public class MessageReceiver extends Thread {
     private void showMessage(TextMessage message){
         if(Main.databaseConnector.getChatroomName(message.getChatroom_id())==null){
             Main.databaseConnector.addChatroom(message.getChatroom_id(),message.getChatroom_nickname());
+            System.out.println("Добавляем чат:" + message.getChatroom_id() + " " + message.getChatroom_nickname());
             gui.getChatrooms().add(message.getChatroom_nickname());
             gui.fillChatroomList();
         }
@@ -157,9 +159,9 @@ public class MessageReceiver extends Thread {
         }
         if(message.getClassType().equals(chatroomInfo)){
             if(message.getStatus().equals(success) && message.getAction().equals(createRequest)){
-                JOptionPane.showMessageDialog(null, "Чат успешно создан");
-                //Main.databaseConnector.addChatroom(message.getChatRoom().getId(),message.getChatRoom().getName());
                 gui.clearChatroomCreation();
+                JOptionPane.showMessageDialog(null, "Чат успешно создан");
+
             }
         }
     }
