@@ -186,14 +186,17 @@ public class GUI extends JFrame {
         return rootPanel;
     }
 
+    public void sendMessageToSender(){
+        int currentId = Main.messageReceiver.getCurrentChatID();
+        TextMessage textMessage = new TextMessage(Sender.modifyText(inputMessageField.getText()), Main.user.getId(), Main.user.getNickname(), currentId, Main.databaseConnector.getChatroomName(currentId));
+        Sender.sendMessage(gson.toJson(textMessage, TextMessage.class));
+        inputMessageField.setText("");
+    }
+
     class ButtonEventListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(sendButton) && !inputMessageField.getText().isEmpty()) {
-                Integer currentId = Main.messageReceiver.getCurrentChatID();
-                TextMessage textMessage = new TextMessage(Sender.modifyText(inputMessageField.getText()), Main.user.getId(), Main.user.getNickname(), currentId, Main.databaseConnector.getChatroomName(currentId));
-                System.out.println(textMessage);
-                Sender.sendMessage(gson.toJson(textMessage));
-                inputMessageField.setText("");
+                sendMessageToSender();
             } else if (e.getSource().equals(sendFileButton)) {
                 JFileChooser fileopen = new JFileChooser();
                 int ret = fileopen.showDialog(null, "Выбрать файл");
@@ -213,13 +216,11 @@ public class GUI extends JFrame {
     }
 
     public void clearChatroomCreation() {
+        //сохраняем данные
         chatrooms.add(nameTextField.getText());
-        chatroomList.removeListSelectionListener(listSelectionListener);
-        chatroomList.setListData(chatrooms.toArray());
-        chatroomList.addListSelectionListener(listSelectionListener);
-        chatroomList.setSelectedValue(nameTextField.getText(), false);
-        tabbedPanel.setSelectedComponent(chatPanel);
-        Main.messageReceiver.setCurrentChatID(Main.databaseConnector.getChatroomID(nameTextField.getText()));
+        //Main.messageReceiver.setCurrentChatID(Main.databaseConnector.getChatroomID(nameTextField.getText()));
+        System.out.println(Main.messageReceiver.getCurrentChatID());
+        //восстанавливаем страницу
         createButton.setEnabled(true);
         nameTextField.setText("");
         checkBoxDialog.setSelected(false);
@@ -228,6 +229,12 @@ public class GUI extends JFrame {
         findTextField.setText("");
         searchResults.clear();
         findList.setListData(searchResults.keySet().toArray());
+        //работаем с основной страницей
+        tabbedPanel.setSelectedComponent(chatPanel);
+        chatroomList.removeListSelectionListener(listSelectionListener);
+        chatroomList.setListData(chatrooms.toArray());
+        chatroomList.addListSelectionListener(listSelectionListener);
+        chatroomList.setSelectedValue(nameTextField.getText(), true);
     }
 
     public void createChatroom() {
@@ -297,8 +304,13 @@ public class GUI extends JFrame {
             chatroomNames.add(Main.databaseConnector.getChatroomName(chatroom));
         }
         this.chatrooms.addAll(chatroomNames);
-        System.out.println(this.chatrooms);
         chatroomList.setListData(chatroomNames.toArray());
+    }
+
+    public void fillChatroomList() {
+        if (!chatrooms.isEmpty()) {
+            chatroomList.setListData(chatrooms.toArray());
+        }
     }
 
     public void fillSearchList(HashMap<String, Integer> users) {
@@ -322,8 +334,8 @@ public class GUI extends JFrame {
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 if (e.getSource().equals(chatroomList)) {
-                    System.out.println("Сменился чат" + chatroomList.getSelectedValue());
                     int chatID = Main.databaseConnector.getChatroomID(chatroomList.getSelectedValue().toString());
+                    System.out.println("CID: " + chatID);
                     Main.messageReceiver.setCurrentChatID(chatID);
                     chatWindow.setText("");
                     List<String> oldMessages = Main.databaseConnector.getMessages(chatID, true);
@@ -361,10 +373,7 @@ public class GUI extends JFrame {
         @Override
         public void keyReleased(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER && !inputMessageField.getText().isEmpty()) {
-                Integer currentId = Main.messageReceiver.getCurrentChatID();
-                TextMessage textMessage = new TextMessage(Sender.modifyText(inputMessageField.getText()), Main.user.getId(), Main.user.getNickname(), currentId, Main.databaseConnector.getChatroomName(currentId));
-                Sender.sendMessage(gson.toJson(textMessage));
-                inputMessageField.setText("");
+                sendMessageToSender();
             }
         }
     }
@@ -380,5 +389,7 @@ public class GUI extends JFrame {
         }
     }
 
-
+    public HashSet<String> getChatrooms() {
+        return chatrooms;
+    }
 }

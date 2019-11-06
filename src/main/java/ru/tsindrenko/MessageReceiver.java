@@ -83,10 +83,9 @@ public class MessageReceiver extends Thread {
                 break;
             case userInfo:
                 Main.user = gson.fromJson(message,User.class);
-                gui.getParticipants().put(Main.user.getId(), Main.user.getNickname());
                 break;
             case chatroomInfo:
-                gui.fillChatroomList(gson.fromJson(message,new TypeToken<List<Integer>>() {}.getType()));
+                //gui.fillChatroomList(gson.fromJson(message,new TypeToken<List<Integer>>() {}.getType()));
                 break;
             case responseInfo:
                 responseHandler(gson.fromJson(message,ResponseMessage.class));
@@ -96,7 +95,9 @@ public class MessageReceiver extends Thread {
 
     private void showMessage(TextMessage message){
         if(Main.databaseConnector.getChatroomName(message.getChatroom_id())==null){
-            Main.databaseConnector.addChatroom(message.getChatroom_id(),message.getSender_nickname());
+            Main.databaseConnector.addChatroom(message.getChatroom_id(),message.getChatroom_nickname());
+            gui.getChatrooms().add(message.getChatroom_nickname());
+            gui.fillChatroomList();
         }
         if(message.getChatroom_id()==currentChatID){
             Main.databaseConnector.addMessageToHistory(
@@ -157,7 +158,7 @@ public class MessageReceiver extends Thread {
         if(message.getClassType().equals(chatroomInfo)){
             if(message.getStatus().equals(success) && message.getAction().equals(createRequest)){
                 JOptionPane.showMessageDialog(null, "Чат успешно создан");
-                Main.databaseConnector.addChatroom(message.getChatRoom().getId(),message.getChatRoom().getName());
+                //Main.databaseConnector.addChatroom(message.getChatRoom().getId(),message.getChatRoom().getName());
                 gui.clearChatroomCreation();
             }
         }
@@ -230,6 +231,7 @@ public class MessageReceiver extends Thread {
     }
 
     public void setCurrentChatID(int currentChatID) {
+        System.out.println("CCI: " + currentChatID);
         this.currentChatID = currentChatID;
     }
 }

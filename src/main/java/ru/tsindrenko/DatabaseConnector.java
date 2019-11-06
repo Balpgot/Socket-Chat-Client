@@ -129,12 +129,12 @@ public class DatabaseConnector {
 
 
     public String getChatroomName(int id){
-        ResultSet chatroomDB = executeQuery("SELECT name FROM Chatrooms WHERE id='"+id+"'");
+        ResultSet chatroomDB = executeQuery("SELECT name FROM Chatrooms WHERE id='"+id+"' AND user_id='"+Main.user.getId()+"'");
         String name = "";
         try {
             if(chatroomDB.next()){
                 name = chatroomDB.getString(1);
-                System.out.println(name);
+                System.out.println("Имя: " + name);
             }
             else{
                 chatroomDB.close();
@@ -210,11 +210,12 @@ public class DatabaseConnector {
     }
 
     public void addChatroom(int id, String name){
+        System.out.println("ДОБАВЛЯЮ ЧАТКОМНАТУ " + name);
         Statement statement;
         try {
             statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO Chatrooms (Chatrooms.id,Chatrooms.name,Chatrooms.is_deleted) VALUES ('" +
-                    id + "','" + name + "'," + "'0')");
+            statement.executeUpdate("INSERT INTO Chatrooms (Chatrooms.id,Chatrooms.name,Chatrooms.is_deleted,Chatrooms.user_id) VALUES ('" +
+                    id + "','" + name + "'," + "'0','" + Main.user.getId() +"')");
             Sender.getChatrooms().put(id,name);
             statement.close();
         }
