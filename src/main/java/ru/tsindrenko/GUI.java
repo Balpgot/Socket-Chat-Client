@@ -68,6 +68,17 @@ public class GUI extends JFrame {
     private JLabel findManageLabel;
     private JLabel blacklistLabel;
     private JLabel moderatorLabel;
+    private JLabel avatarAccountLabel;
+    private JTextField nameAccountTextField;
+    private JTextField loginAccountTextField;
+    private JPasswordField passwordAccountField;
+    private JButton saveAccountButton;
+    private JButton editAccountButton;
+    private JLabel nameAccountLabel;
+    private JLabel loginAccountLabel;
+    private JLabel passwordAccountLabel;
+    private JPasswordField repeatPasswordAccountField;
+    private JLabel repeatPasswordAccountLabel;
     private HashMap<String, Integer> blacklist;
     private HashMap<String, Integer> moderators;
     private HashMap<String, Integer> chatParticipants;
@@ -104,7 +115,7 @@ public class GUI extends JFrame {
         //настройки чата
         sendButton.addActionListener(buttonEventListener);
         sendFileButton.addActionListener(buttonEventListener);
-        chatroomList.addListSelectionListener(new ListEventListener());
+        chatroomList.addListSelectionListener(listSelectionListener);
         inputMessageField.setFocusable(true);
         inputMessageField.addKeyListener(keyboardListener);
         //настройки создания чата
@@ -130,6 +141,19 @@ public class GUI extends JFrame {
         blacklist = new HashMap<>();
         moderators = new HashMap<>();
         chatParticipants = new HashMap<>();
+        saveButton.setEnabled(false);
+        participantButton.setEnabled(false);
+        findDialogButton.setEnabled(false);
+        blacklistButton.setEnabled(false);
+        moderatorButton.setEnabled(false);
+        findUserTextField.setEnabled(false);
+        findUsersList.setEnabled(false);
+        manageModeratorsList.setEnabled(false);
+        manageBlacklistList.setEnabled(false);
+        manageParticipantsList.setEnabled(false);
+        //настройки аккаунта
+        saveAccountButton.addActionListener(new AccountButtonsEventListener());
+        editAccountButton.addActionListener(new AccountButtonsEventListener());
     }
 
     /*
@@ -184,7 +208,6 @@ public class GUI extends JFrame {
     //заполняет окно чата
     public void showAllMessages() {
         int chatID = Main.databaseConnector.getChatroomID(chatroomList.getSelectedValue().toString());
-        System.out.println("CID: " + chatID);
         Main.messageReceiver.setCurrentChatID(chatID);
         chatWindow.setText("");
         List<String> oldMessages = Main.databaseConnector.getMessages(chatID, true);
@@ -328,6 +351,25 @@ public class GUI extends JFrame {
         findUserTextField.setText("");
     }
 
+    private String passwordToString(char[] password) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < password.length; i++) {
+            sb.append(password[i]);
+        }
+        return sb.toString();
+    }
+
+    public void blockAccountFields() {
+        nameAccountTextField.setEditable(false);
+        loginAccountTextField.setEditable(false);
+        passwordAccountField.setEditable(false);
+        repeatPasswordAccountLabel.setVisible(false);
+        repeatPasswordAccountField.setVisible(false);
+        repeatPasswordAccountField.setEnabled(false);
+        saveAccountButton.setEnabled(false);
+        saveAccountButton.setVisible(false);
+    }
+
     //слушатели
 
     class AdministratorComboBoxListener implements ActionListener {
@@ -336,6 +378,16 @@ public class GUI extends JFrame {
             System.out.println(chatComboBox.getSelectedItem());
             if (administratedTabbedPanel.getSelectedIndex() == 0) {
                 if (chatComboBox.getSelectedItem().toString() != null) {
+                    saveButton.setEnabled(true);
+                    participantButton.setEnabled(true);
+                    blacklistButton.setEnabled(true);
+                    moderatorButton.setEnabled(true);
+                    findDialogButton.setEnabled(true);
+                    findUserTextField.setEnabled(true);
+                    findUsersList.setEnabled(true);
+                    manageModeratorsList.setEnabled(true);
+                    manageBlacklistList.setEnabled(true);
+                    manageParticipantsList.setEnabled(true);
                     blacklist.clear();
                     moderators.clear();
                     chatParticipants.clear();
@@ -343,6 +395,7 @@ public class GUI extends JFrame {
                     chatComboBox.setEnabled(false);
                 }
                 setRights();
+                chatManagePanel.setEnabled(true);
             }
         }
     }
@@ -478,7 +531,7 @@ public class GUI extends JFrame {
                     updateAdministratorLists();
                 }
             }
-            if (e.getSource().equals(saveButton)) {
+            if (e.getSource().equals(saveButton) && chatComboBox.getSelectedItem() != null) {
                 chatManagePanel.setEnabled(false);
                 HashSet<Integer> freshParticipants = new HashSet<>();
                 freshParticipants.addAll(chatParticipants.values());
@@ -508,10 +561,45 @@ public class GUI extends JFrame {
         }
     }
 
+    class AccountButtonsEventListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource().equals(editAccountButton)) {
+                if (editAccountButton.getText().equals("Изменить")) {
+                    passwordAccountField.setEditable(true);
+                    nameAccountTextField.setEditable(true);
+                    passwordAccountField.setText(Main.user.getPassword());
+                    repeatPasswordAccountField.setText(Main.user.getPassword());
+                    repeatPasswordAccountLabel.setVisible(true);
+                    repeatPasswordAccountField.setVisible(true);
+                    repeatPasswordAccountField.setEnabled(true);
+                    saveAccountButton.setEnabled(true);
+                    saveAccountButton.setVisible(true);
+                    editAccountButton.setText("Назад");
+                } else if (editAccountButton.getText().equals("Назад")) {
+                    blockAccountFields();
+                    editAccountButton.setText("Изменить");
+                }
+            }
+            if (e.getSource().equals(saveAccountButton)) {
+                if (nameAccountTextField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Имя не должно быть пустым");
+                } else if (passwordToString(passwordAccountField.getPassword()).isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Пароль не должнен быть пустым");
+                } else if (!passwordToString(passwordAccountField.getPassword()).equals(passwordToString(repeatPasswordAccountField.getPassword()))) {
+                    JOptionPane.showMessageDialog(null, "Пароли должны совпадать");
+                } else {
+                    User newUser = new User(loginAccountTextField.getText(), passwordToString(passwordAccountField.getPassword()), nameAccountTextField.getText());
+                    newUser.setId(Main.user.getId());
+                    Sender.sendMessage(gson.toJson(new RequestMessage(userInfo, updateRequest, newUser)));
+                    blockAccountFields();
+                }
+            }
+        }
+    }
+
     class TabGUIChangeListener implements ChangeListener {
         public void stateChanged(ChangeEvent e) {
-            System.out.println("TP: " + tabbedPanel.getSelectedIndex());
-            System.out.println("ATP: " + administratedTabbedPanel.getSelectedIndex());
             if (tabbedPanel.getSelectedIndex() == 0) {
                 chatPanel.setEnabled(true);
                 accountPanel.setEnabled(false);
@@ -537,6 +625,11 @@ public class GUI extends JFrame {
                         Sender.sendMessage(gson.toJson(new RequestMessage(chatroomInfo, getRequest, adminInfo)));
                     }
                 }
+            }
+            if (tabbedPanel.getSelectedIndex() == 1) {
+                nameAccountTextField.setText(Main.user.getNickname());
+                loginAccountTextField.setText(Main.user.getLogin());
+                blockAccountFields();
             }
         }
     }
@@ -636,8 +729,40 @@ public class GUI extends JFrame {
         sendFileButton.setText("Отправить файл");
         chatPanel.add(sendFileButton, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         accountPanel = new JPanel();
-        accountPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        accountPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(6, 3, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("Аккаунт", accountPanel);
+        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
+        accountPanel.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        nameAccountTextField = new JTextField();
+        accountPanel.add(nameAccountTextField, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        nameAccountLabel = new JLabel();
+        nameAccountLabel.setText("Имя:");
+        accountPanel.add(nameAccountLabel, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        loginAccountLabel = new JLabel();
+        loginAccountLabel.setText("Логин:");
+        accountPanel.add(loginAccountLabel, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        passwordAccountLabel = new JLabel();
+        passwordAccountLabel.setText("Пароль:");
+        accountPanel.add(passwordAccountLabel, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        loginAccountTextField = new JTextField();
+        loginAccountTextField.setEditable(false);
+        accountPanel.add(loginAccountTextField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        passwordAccountField = new JPasswordField();
+        accountPanel.add(passwordAccountField, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        avatarAccountLabel = new JLabel();
+        avatarAccountLabel.setText("Здесь будет фото");
+        accountPanel.add(avatarAccountLabel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 6, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(100, 100), new Dimension(100, 100), new Dimension(100, 100), 0, false));
+        repeatPasswordAccountLabel = new JLabel();
+        repeatPasswordAccountLabel.setText("Повторите пароль:");
+        accountPanel.add(repeatPasswordAccountLabel, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        repeatPasswordAccountField = new JPasswordField();
+        accountPanel.add(repeatPasswordAccountField, new com.intellij.uiDesigner.core.GridConstraints(3, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        editAccountButton = new JButton();
+        editAccountButton.setText("Изменить");
+        accountPanel.add(editAccountButton, new com.intellij.uiDesigner.core.GridConstraints(4, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        saveAccountButton = new JButton();
+        saveAccountButton.setText("Сохранить");
+        accountPanel.add(saveAccountButton, new com.intellij.uiDesigner.core.GridConstraints(4, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         adminPanel = new JPanel();
         adminPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("Администрирование", adminPanel);

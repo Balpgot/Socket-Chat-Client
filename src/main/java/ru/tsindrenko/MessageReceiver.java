@@ -23,6 +23,7 @@ public class MessageReceiver extends Thread {
     private final String userNotFound = "USER_NOT_FOUND";
     private final String wrongPassword = "WRONG_PASSWORD";
     private final String loginIsOccupied = "LOGIN_IS_OCCUPIED";
+    private final String nicknameIsOccupied = "NICKNAME_IS_OCCUPIED";
     private final String userIsLogged = "USER_IS_LOGGED";
     private final String chatroomInfo = "CHATROOM";
     private final String userInfo = "USER";
@@ -177,6 +178,16 @@ public class MessageReceiver extends Thread {
                     gui.getChatComboBox().setEnabled(true);
                     gui.setCurrentChatAdmin(message.getUser().getNickname());
                     gui.setRights();
+                }
+            }
+            else if(message.getAction().equals(updateRequest)){
+                if(message.getStatus().equals(success)) {
+                    Main.user.setNickname(message.getUser().getNickname());
+                    Main.user.setPassword(message.getUser().getPassword());
+                    JOptionPane.showMessageDialog(null, "Изменения успешно внесены");
+                }
+                else if(message.getStatus().equals(nicknameIsOccupied)){
+                    JOptionPane.showMessageDialog(null, "Имя уже занято, повторите попытку снова");
                 }
             }
             else{
