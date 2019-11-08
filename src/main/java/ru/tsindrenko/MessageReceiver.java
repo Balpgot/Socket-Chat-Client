@@ -30,6 +30,9 @@ public class MessageReceiver extends Thread {
     private final String updateRequest = "UPDATE";
     private final String deleteRequest = "DELETE";
     private final String createRequest = "CREATE";
+    private final String blacklistInfo = "BLACKLIST";
+    private final String participantsInfo = "PARTICIPANTS";
+    private final String moderatorInfo = "MODERATOR";
 
     private BufferedReader in; // поток чтения из сокета
     private boolean isActive;
@@ -84,6 +87,13 @@ public class MessageReceiver extends Thread {
                 break;
             case userInfo:
                 Main.user = gson.fromJson(message,User.class);
+                List<ChatRoom> chatRooms = Main.databaseConnector.getChatrooms();
+                List<String> chatroomNames = new ArrayList<>();
+                for (ChatRoom chatRoom:chatRooms) {
+                    chatroomNames.add(chatRoom.getName());
+                }
+                gui.getChatrooms().addAll(chatroomNames);
+                gui.fillChatroomList();
                 break;
             case chatroomInfo:
                 //gui.fillChatroomList(gson.fromJson(message,new TypeToken<List<Integer>>() {}.getType()));
@@ -150,8 +160,30 @@ public class MessageReceiver extends Thread {
 
     private void responseHandler(ResponseMessage message){
         if(message.getClassType().equals(userInfo)){
-            if(message.getStatus().equals(success) && message.getAction().equals(getRequest)){
+            if(message.getStatus().equals(success) && message.getAction().equals(getRequest) && !gui.getFindTextField().getText().isEmpty()){
                 gui.fillSearchList(message.getBody());
+                gui.getFindTextField().setText("");
+            }
+            else if(message.getStatus().equals(success) && message.getAction().equals(getRequest) && !gui.getFindUserTextField().getText().isEmpty()){
+                gui.fillSearchList(message.getBody());
+                gui.getFindUserTextField().setText("");
+            }
+            else if(message.getStatus().equals(success) && message.getAction().equals(getRequest)){
+                if(gui.getChatParticipants().isEmpty() && message.getParameter().equals(participantsInfo)){
+                    gui.getChatParticipants().putAll(message.getBody());
+                    gui.getManageParticipantsList().setListData(gui.getChatParticipants().keySet().toArray());
+                }
+                else if(message.getStatus().equals(success) && message.getParameter().equals(blacklistInfo)) {
+                    gui.getBlacklist().putAll(message.getBody());
+                    gui.getManageBlacklistList().setListData(gui.getBlacklist().keySet().toArray());
+                }
+                else if(message.getStatus().equals(success) && message.getParameter().equals(moderatorInfo)) {
+                    gui.getModerators().putAll(message.getBody());
+                    System.out.println(gui.getModerators());
+                    gui.getManageModeratorsList().setListData(gui.getModerators().keySet().toArray());
+                    gui.getChatComboBox().setEnabled(true);
+                    gui.setRights();
+                }
             }
             else{
                 JOptionPane.showMessageDialog(null, "Произошла ошибка, попробуйте снова.");
@@ -161,7 +193,11 @@ public class MessageReceiver extends Thread {
             if(message.getStatus().equals(success) && message.getAction().equals(createRequest)){
                 gui.clearChatroomCreation();
                 JOptionPane.showMessageDialog(null, "Чат успешно создан");
-
+            }
+            if(message.getStatus().equals(success) && message.getAction().equals(getRequest)){
+                for(String chatName:message.getBody().keySet()){
+                    gui.getChatComboBox().addItem(chatName);
+                }
             }
         }
     }

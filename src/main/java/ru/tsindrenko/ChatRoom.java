@@ -1,8 +1,6 @@
 package ru.tsindrenko;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 public class ChatRoom {
     private final String type = "CHATROOM";
@@ -11,7 +9,7 @@ public class ChatRoom {
     private Integer admin_id;
     private boolean is_dialog;
     private HashSet<Integer> participants_id = new HashSet<>();
-    private transient List<Integer> blacklist = new ArrayList<>();
+    private HashSet<Integer> blacklist = new HashSet<>();
 
     ChatRoom(int id, String name){
         this.id = id;
@@ -73,11 +71,11 @@ public class ChatRoom {
         this.participants_id = participants_id;
     }
 
-    public List<Integer> getBlacklist() {
+    public HashSet<Integer> getBlacklist() {
         return blacklist;
     }
 
-    public void setBlacklist(List<Integer> blacklist) {
+    public void setBlacklist(HashSet<Integer> blacklist) {
         this.blacklist = blacklist;
     }
 }

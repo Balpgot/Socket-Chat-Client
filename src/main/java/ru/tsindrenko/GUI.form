@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="244" y="20" width="755" height="419"/>
+      <xy x="244" y="20" width="755" height="420"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -98,119 +98,302 @@
             <border type="none"/>
             <children/>
           </grid>
-          <grid id="2277" binding="contactsPanel" layout-manager="GridLayoutManager" row-count="7" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="7f5f4" binding="adminPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Контакты"/>
+              <tabbedpane title="Администрирование"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <scrollpane id="8a1a7" binding="searchScroll">
+              <tabbedpane id="aa89e" binding="administratedTabbedPanel">
                 <constraints>
-                  <grid row="3" column="0" row-span="2" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="b8fd3" class="javax.swing.JList" binding="findList">
-                    <constraints/>
-                    <properties>
-                      <model/>
-                    </properties>
-                  </component>
-                </children>
-              </scrollpane>
-              <component id="a9eae" class="javax.swing.JLabel" binding="chatroomName">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Название чата:"/>
-                </properties>
-              </component>
-              <component id="b0e48" class="javax.swing.JTextField" binding="findTextField">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <scrollpane id="2c81c" binding="participantsScroll">
-                <constraints>
-                  <grid row="3" column="3" row-span="2" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <component id="3ab6a" class="javax.swing.JList" binding="participantsList">
-                    <constraints/>
+                  <grid id="e5429" binding="chatManagePanel" layout-manager="GridLayoutManager" row-count="7" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <tabbedpane title="Управление чатами"/>
+                    </constraints>
                     <properties/>
-                  </component>
+                    <border type="none"/>
+                    <children>
+                      <component id="6d7ad" class="javax.swing.JComboBox" binding="chatComboBox">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="3" indent="0" use-parent-layout="false">
+                            <minimum-size width="165" height="30"/>
+                            <preferred-size width="165" height="30"/>
+                            <maximum-size width="165" height="30"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="4a108" class="javax.swing.JButton" binding="blacklistButton">
+                        <constraints>
+                          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <minimum-size width="60" height="60"/>
+                            <preferred-size width="60" height="60"/>
+                            <maximum-size width="60" height="60"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <text value="&lt;&gt;"/>
+                        </properties>
+                      </component>
+                      <component id="c9aec" class="javax.swing.JButton" binding="moderatorButton">
+                        <constraints>
+                          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <minimum-size width="60" height="60"/>
+                            <preferred-size width="60" height="60"/>
+                            <maximum-size width="60" height="60"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <text value="&lt;&gt;"/>
+                        </properties>
+                      </component>
+                      <scrollpane id="ca8ff">
+                        <constraints>
+                          <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="ffff" class="javax.swing.JList" binding="manageBlacklistList">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <scrollpane id="3a8f8">
+                        <constraints>
+                          <grid row="2" column="0" row-span="5" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="97d1d" class="javax.swing.JList" binding="manageParticipantsList">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <scrollpane id="89a2c">
+                        <constraints>
+                          <grid row="6" column="2" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="c4194" class="javax.swing.JList" binding="manageModeratorsList">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <scrollpane id="44739">
+                        <constraints>
+                          <grid row="2" column="2" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="4f296" class="javax.swing.JList" binding="findUsersList">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <component id="23a06" class="javax.swing.JButton" binding="participantButton">
+                        <constraints>
+                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <minimum-size width="60" height="60"/>
+                            <preferred-size width="60" height="60"/>
+                            <maximum-size width="60" height="60"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <text value="&lt;&gt;"/>
+                        </properties>
+                      </component>
+                      <component id="33c15" class="javax.swing.JButton" binding="findDialogButton">
+                        <constraints>
+                          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Искать"/>
+                        </properties>
+                      </component>
+                      <component id="92ad" class="javax.swing.JButton" binding="saveButton">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Сохранить"/>
+                        </properties>
+                      </component>
+                      <component id="97ead" class="javax.swing.JTextField" binding="findUserTextField">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="446a1" class="javax.swing.JLabel" binding="participantsManageLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Участники"/>
+                        </properties>
+                      </component>
+                      <component id="626a5" class="javax.swing.JLabel" binding="findManageLabel">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Найденные пользователи"/>
+                        </properties>
+                      </component>
+                      <component id="37d8" class="javax.swing.JLabel" binding="blacklistLabel">
+                        <constraints>
+                          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Заблокированные пользователи"/>
+                        </properties>
+                      </component>
+                      <component id="5374f" class="javax.swing.JLabel" binding="moderatorLabel">
+                        <constraints>
+                          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Модераторы"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="3f3a3" binding="contactsPanel" layout-manager="GridLayoutManager" row-count="7" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <tabbedpane title="Создать чат"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <scrollpane id="83c28" binding="searchScroll">
+                        <constraints>
+                          <grid row="3" column="0" row-span="2" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="ee753" class="javax.swing.JList" binding="findList">
+                            <constraints/>
+                            <properties>
+                              <model/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <component id="b09eb" class="javax.swing.JLabel" binding="chatroomName">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Название чата:"/>
+                        </properties>
+                      </component>
+                      <component id="d4118" class="javax.swing.JTextField" binding="findTextField">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <scrollpane id="fbaf6" binding="participantsScroll">
+                        <constraints>
+                          <grid row="3" column="3" row-span="2" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="6599b" class="javax.swing.JList" binding="participantsList">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <component id="1b2de" class="javax.swing.JLabel" binding="participantsLabel">
+                        <constraints>
+                          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Список участников:"/>
+                        </properties>
+                      </component>
+                      <component id="9060a" class="javax.swing.JButton" binding="findButton">
+                        <constraints>
+                          <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Найти"/>
+                        </properties>
+                      </component>
+                      <component id="9c009" class="javax.swing.JButton" binding="createButton">
+                        <constraints>
+                          <grid row="6" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Создать"/>
+                        </properties>
+                      </component>
+                      <component id="b9ac" class="javax.swing.JCheckBox" binding="checkBoxDialog">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Диалог"/>
+                        </properties>
+                      </component>
+                      <component id="75cd2" class="javax.swing.JTextField" binding="nameTextField">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="5e1d6" class="javax.swing.JLabel" binding="findLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Поиск"/>
+                        </properties>
+                      </component>
+                      <component id="33ba" class="javax.swing.JButton" binding="makeParticipantButton">
+                        <constraints>
+                          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <minimum-size width="60" height="60"/>
+                            <preferred-size width="60" height="60"/>
+                            <maximum-size width="60" height="60"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <enabled value="true"/>
+                          <text value="&lt;&gt;"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
                 </children>
-              </scrollpane>
-              <component id="ca3d1" class="javax.swing.JLabel" binding="participantsLabel">
-                <constraints>
-                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Список участников:"/>
-                </properties>
-              </component>
-              <component id="7df8d" class="javax.swing.JButton" binding="findButton">
-                <constraints>
-                  <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Найти"/>
-                </properties>
-              </component>
-              <component id="2ac3c" class="javax.swing.JButton" binding="createButton">
-                <constraints>
-                  <grid row="6" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Создать"/>
-                </properties>
-              </component>
-              <component id="1819b" class="javax.swing.JCheckBox" binding="checkBoxDialog">
-                <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Диалог"/>
-                </properties>
-              </component>
-              <component id="59a36" class="javax.swing.JTextField" binding="nameTextField">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="bbb0" class="javax.swing.JLabel" binding="findLabel">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Поиск"/>
-                </properties>
-              </component>
-              <component id="243f1" class="javax.swing.JButton" binding="makeParticipantButton">
-                <constraints>
-                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <minimum-size width="60" height="60"/>
-                    <preferred-size width="60" height="60"/>
-                    <maximum-size width="60" height="60"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <enabled value="true"/>
-                  <text value="&lt;&gt;"/>
-                </properties>
-              </component>
+              </tabbedpane>
             </children>
           </grid>
         </children>

@@ -66,7 +66,7 @@ public class DatabaseConnector {
     }
 
     public List<ChatRoom> getChatrooms(){
-        ResultSet resultSet = executeQuery("SELECT * FROM Chatrooms WHERE is_deleted=0");
+        ResultSet resultSet = executeQuery("SELECT * FROM Chatrooms WHERE is_deleted=0 AND user_id ="+Main.user.getId());
         List<ChatRoom> chatRoomList = new ArrayList<>();
         ChatRoom chatRoom;
         try{

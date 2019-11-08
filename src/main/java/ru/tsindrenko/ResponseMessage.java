@@ -10,12 +10,21 @@ public class ResponseMessage {
     private HashMap<String,Integer> body;
     private User user;
     private ChatRoom chatRoom;
+    private String parameter;
 
     public ResponseMessage(String classType, String action, String status, HashMap<String,Integer> body) {
         this.classType = classType;
         this.action = action;
         this.status = status;
         this.body = body;
+    }
+
+    public ResponseMessage(String classType, String action, String status, HashMap<String, Integer> body, String parameter) {
+        this.classType = classType;
+        this.action = action;
+        this.status = status;
+        this.body = body;
+        this.parameter = parameter;
     }
 
     public ResponseMessage(String classType, String action, String status, User user) {
@@ -84,5 +93,13 @@ public class ResponseMessage {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public String getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(String parameter) {
+        this.parameter = parameter;
     }
 }
