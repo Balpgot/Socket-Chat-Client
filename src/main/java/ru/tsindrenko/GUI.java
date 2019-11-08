@@ -71,6 +71,7 @@ public class GUI extends JFrame {
     private HashMap<String, Integer> blacklist;
     private HashMap<String, Integer> moderators;
     private HashMap<String, Integer> chatParticipants;
+    private String currentChatAdmin;
     //cлушатели
     ButtonEventListener buttonEventListener;
     ListEventListener listSelectionListener;
@@ -121,6 +122,7 @@ public class GUI extends JFrame {
         manageParticipantsList.addListSelectionListener(new AdministratorListsEventListener());
         manageModeratorsList.addListSelectionListener(new AdministratorListsEventListener());
         manageBlacklistList.addListSelectionListener(new AdministratorListsEventListener());
+        saveButton.addActionListener(new AdministratorButtonsEventListener());
         findDialogButton.addActionListener(new AdministratorButtonsEventListener());
         blacklistButton.addActionListener(new AdministratorButtonsEventListener());
         moderatorButton.addActionListener(new AdministratorButtonsEventListener());
@@ -264,6 +266,7 @@ public class GUI extends JFrame {
     //завершает создание чат-комнаты
     public void clearChatroomCreation() {
         //сохраняем данные
+        JOptionPane.showMessageDialog(null, "Чат успешно создан");
         chatrooms.add(nameTextField.getText());
         Main.messageReceiver.setCurrentChatID(Main.databaseConnector.getChatroomID(nameTextField.getText()));
         System.out.println(Main.messageReceiver.getCurrentChatID());
@@ -313,9 +316,21 @@ public class GUI extends JFrame {
         }
     }
 
+    public void updateAdministratorLists() {
+        manageParticipantsList.setListData(chatParticipants.keySet().toArray());
+        manageBlacklistList.setListData(blacklist.keySet().toArray());
+        manageModeratorsList.setListData(moderators.keySet().toArray());
+    }
+
+    public void finishEditing() {
+        chatManagePanel.setEnabled(true);
+        saveButton.setEnabled(true);
+        findUserTextField.setText("");
+    }
+
     //слушатели
 
-    public class AdministratorComboBoxListener implements ActionListener {
+    class AdministratorComboBoxListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(chatComboBox.getSelectedItem());
@@ -327,41 +342,32 @@ public class GUI extends JFrame {
                     Sender.sendMessage(gson.toJson(new RequestMessage(chatroomInfo, getRequest, new ChatRoom(Main.databaseConnector.getChatroomID(chatComboBox.getSelectedItem().toString()), chatComboBox.getSelectedItem().toString()))));
                     chatComboBox.setEnabled(false);
                 }
-                if (moderators.containsKey(Main.user.getNickname())) {
-                    System.out.println("Пользователь - модератор");
-                    participantButton.setEnabled(false);
-                    moderatorButton.setEnabled(false);
-                    findUserTextField.setEnabled(false);
-                    findDialogButton.setEnabled(false);
-                } else {
-                    participantButton.setEnabled(true);
-                    moderatorButton.setEnabled(true);
-                    findUserTextField.setEnabled(true);
-                    findDialogButton.setEnabled(true);
-                }
+                setRights();
             }
         }
     }
 
     class AdministratorListsEventListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
-            //очищаем лишние списки
-            if (e.getSource().equals(findUsersList)) {
-                manageBlacklistList.clearSelection();
-                manageParticipantsList.clearSelection();
-                manageModeratorsList.clearSelection();
-            } else if (e.getSource().equals(manageBlacklistList)) {
-                manageParticipantsList.clearSelection();
-                manageModeratorsList.clearSelection();
-                findUsersList.clearSelection();
-            } else if (e.getSource().equals(manageParticipantsList)) {
-                manageModeratorsList.clearSelection();
-                findUsersList.clearSelection();
-                manageBlacklistList.clearSelection();
-            } else {
-                manageParticipantsList.clearSelection();
-                findUsersList.clearSelection();
-                manageBlacklistList.clearSelection();
+            if (!e.getValueIsAdjusting()) {
+                //очищаем лишние списки
+                if (e.getSource().equals(findUsersList)) {
+                    manageBlacklistList.clearSelection();
+                    manageParticipantsList.clearSelection();
+                    manageModeratorsList.clearSelection();
+                } else if (e.getSource().equals(manageBlacklistList)) {
+                    manageParticipantsList.clearSelection();
+                    manageModeratorsList.clearSelection();
+                    findUsersList.clearSelection();
+                } else if (e.getSource().equals(manageParticipantsList)) {
+                    manageModeratorsList.clearSelection();
+                    findUsersList.clearSelection();
+                    manageBlacklistList.clearSelection();
+                } else {
+                    manageParticipantsList.clearSelection();
+                    findUsersList.clearSelection();
+                    manageBlacklistList.clearSelection();
+                }
             }
         }
     }
@@ -379,8 +385,6 @@ public class GUI extends JFrame {
                 } else if (e.getSource().equals(participantsList)) {
                     findList.clearSelection();
                 }
-
-
             }
         }
     }
@@ -407,8 +411,83 @@ public class GUI extends JFrame {
             if (e.getSource().equals(findDialogButton)) {
                 findUsers();
             }
+            if (e.getSource().equals(participantButton)) {
+                if (findUsersList.getSelectedValue() != null) {
+                    String selectedValue = findUsersList.getSelectedValue().toString();
+                    if (chatParticipants.containsKey(selectedValue) || blacklist.containsKey(selectedValue)) {
+                        JOptionPane.showMessageDialog(null, "Участик уже состоит в чате");
+                    } else {
+                        chatParticipants.put(selectedValue, searchResults.get(selectedValue));
+                        updateAdministratorLists();
+                    }
+                } else if (manageParticipantsList.getSelectedValue() != null) {
+                    String selectedValue = manageParticipantsList.getSelectedValue().toString();
+                    if (selectedValue.equals(Main.user.getNickname())) {
+                        JOptionPane.showMessageDialog(null, "Нельзя удалить себя из чата");
+                    } else if (moderators.containsKey(selectedValue) && moderators.containsKey(Main.user.getNickname())) {
+                        JOptionPane.showMessageDialog(null, "Модератора может удалить только администратор");
+                    } else {
+                        moderators.remove(selectedValue);
+                        chatParticipants.remove(selectedValue);
+                        updateAdministratorLists();
+                    }
+                }
+            }
             if (e.getSource().equals(blacklistButton)) {
-
+                if (manageParticipantsList.getSelectedValue() != null) {
+                    String selectedValue = manageParticipantsList.getSelectedValue().toString();
+                    if (selectedValue.equals(Main.user.getNickname())) {
+                        JOptionPane.showMessageDialog(null, "Нельзя заблокировать самого себя");
+                    } else if (moderators.containsKey(selectedValue) && moderators.containsKey(Main.user.getNickname())) {
+                        JOptionPane.showMessageDialog(null, "Модератора может заблокировать только администратор");
+                    } else if (selectedValue.equals(currentChatAdmin)) {
+                        JOptionPane.showMessageDialog(null, "Нельзя заблокировать администратора");
+                    } else if (moderators.containsKey(selectedValue) && !moderators.containsKey(Main.user.getNickname())) {
+                        moderators.remove(selectedValue);
+                        blacklist.put(selectedValue, chatParticipants.get(selectedValue));
+                        chatParticipants.remove(selectedValue);
+                        updateAdministratorLists();
+                    } else {
+                        blacklist.put(selectedValue, chatParticipants.get(selectedValue));
+                        chatParticipants.remove(selectedValue);
+                        updateAdministratorLists();
+                    }
+                } else if (manageBlacklistList.getSelectedValue() != null) {
+                    String selectedValue = manageBlacklistList.getSelectedValue().toString();
+                    chatParticipants.put(selectedValue, blacklist.get(selectedValue));
+                    blacklist.remove(selectedValue);
+                    updateAdministratorLists();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Сначала выберите участника чата или заблокированного пользователя");
+                }
+            }
+            if (e.getSource().equals(moderatorButton)) {
+                if (manageParticipantsList.getSelectedValue() != null) {
+                    String selectedValue = manageParticipantsList.getSelectedValue().toString();
+                    if (moderators.containsKey(selectedValue)) {
+                        JOptionPane.showMessageDialog(null, "Пользователь уже модератор");
+                    } else if (selectedValue.equals(currentChatAdmin)) {
+                        JOptionPane.showMessageDialog(null, "Пользователь уже администратор");
+                    } else {
+                        moderators.put(selectedValue, chatParticipants.get(selectedValue));
+                        updateAdministratorLists();
+                    }
+                } else if (manageModeratorsList.getSelectedValue() != null) {
+                    String selectedValue = manageModeratorsList.getSelectedValue().toString();
+                    moderators.remove(selectedValue);
+                    updateAdministratorLists();
+                }
+            }
+            if (e.getSource().equals(saveButton)) {
+                chatManagePanel.setEnabled(false);
+                HashSet<Integer> freshParticipants = new HashSet<>();
+                freshParticipants.addAll(chatParticipants.values());
+                HashSet<Integer> freshBlackList = new HashSet<>();
+                freshBlackList.addAll(blacklist.values());
+                HashSet<Integer> freshModerators = new HashSet<>();
+                freshModerators.addAll(moderators.values());
+                ChatRoom chatRoom = new ChatRoom(chatComboBox.getSelectedItem().toString(), chatParticipants.get(currentChatAdmin), freshParticipants, freshBlackList);
+                Sender.sendMessage(gson.toJson(new RequestMessage(chatroomInfo, updateRequest, chatRoom, freshModerators)));
             }
         }
     }
@@ -508,6 +587,10 @@ public class GUI extends JFrame {
         return manageModeratorsList;
     }
 
+    public void setCurrentChatAdmin(String currentChatAdmin) {
+        this.currentChatAdmin = currentChatAdmin;
+    }
+
     {
 // GUI initializer generated by IntelliJ IDEA GUI Designer
 // >>> IMPORTANT!! <<<
@@ -528,30 +611,30 @@ public class GUI extends JFrame {
         tabbedPanel = new JTabbedPane();
         rootPanel.add(tabbedPanel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         chatPanel = new JPanel();
-        chatPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
+        chatPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(6, 2, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("Чат", chatPanel);
         inputMessageField = new JTextField();
         inputMessageField.setText("");
-        chatPanel.add(inputMessageField, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(302, 30), null, 0, false));
+        chatPanel.add(inputMessageField, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(302, 30), null, 0, false));
         sendButton = new JButton();
         sendButton.setText("Отправить");
-        chatPanel.add(sendButton, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(302, 30), null, 0, false));
-        sendFileButton = new JButton();
-        sendFileButton.setText("Отправить файл");
-        chatPanel.add(sendFileButton, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        chatPanel.add(sendButton, new com.intellij.uiDesigner.core.GridConstraints(5, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(302, 30), null, 0, false));
         chatScroll = new JScrollPane();
-        chatPanel.add(chatScroll, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        chatPanel.add(chatScroll, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 3, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         chatWindow = new JTextArea();
         chatWindow.setEditable(false);
         chatWindow.setText("");
         chatScroll.setViewportView(chatWindow);
         chatListScroll = new JScrollPane();
         chatListScroll.putClientProperty("html.disable", Boolean.FALSE);
-        chatPanel.add(chatListScroll, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        chatPanel.add(chatListScroll, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 3, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         chatroomList = new JList();
         final DefaultListModel defaultListModel1 = new DefaultListModel();
         chatroomList.setModel(defaultListModel1);
         chatListScroll.setViewportView(chatroomList);
+        sendFileButton = new JButton();
+        sendFileButton.setText("Отправить файл");
+        chatPanel.add(sendFileButton, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         accountPanel = new JPanel();
         accountPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanel.addTab("Аккаунт", accountPanel);

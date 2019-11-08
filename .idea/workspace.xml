@@ -7,18 +7,19 @@
     <list default="true" id="de21fdfe-2864-4974-bdaa-15f5ab0a11b9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/ChatRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/ChatRoom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/DatabaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/DatabaseConnector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/RequestMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/RequestMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/ResponseMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/tsindrenko/ResponseMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ChatClient-1.0-shaded.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/ChatClient-1.0-shaded.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Client.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/Client.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/ChatRoom.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/ChatRoom.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$AdministratorButtonsEventListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$AdministratorButtonsEventListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$AdministratorComboBoxListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$AdministratorComboBoxListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$AdministratorListsEventListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$AdministratorListsEventListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$ButtonEventListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$ButtonEventListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$KeyboardListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$KeyboardListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$ListEventListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$ListEventListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$TabGUIChangeListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI$TabGUIChangeListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/GUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ru/tsindrenko/MessageReceiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/tsindrenko/MessageReceiver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/original-Client.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-Client.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -33,11 +34,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="184" column="36" selection-start-line="184" selection-start-column="36" selection-end-line="184" selection-end-column="36" />
+            <state relative-caret-position="428">
+              <caret line="196" column="13" selection-start-line="196" selection-start-column="13" selection-end-line="196" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#showMessage#0;class#MessageReceiver#0" />
@@ -45,8 +46,7 @@
                 <element signature="method#serviceHandler#0;class#MessageReceiver#0" />
                 <element signature="method#receiveFile#0;class#MessageReceiver#0" />
                 <element signature="method#stopReceiver#0;class#MessageReceiver#0" />
-                <element signature="e#11204#11205#0" expanded="true" />
-                <element signature="e#11240#11241#0" expanded="true" />
+                <element signature="e#11218#11219#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -55,38 +55,54 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/ResponseMessage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="21" column="125" selection-start-line="21" selection-start-column="125" selection-end-line="21" selection-end-column="125" />
+            <state relative-caret-position="360">
+              <caret line="29" column="136" selection-start-line="29" selection-start-column="136" selection-end-line="29" selection-end-column="136" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/RequestMessage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="32" column="25" selection-start-line="32" selection-start-column="25" selection-end-line="32" selection-end-column="25" />
-              <folding>
-                <element signature="method#RequestMessage#0;class#RequestMessage#0" />
-                <element signature="method#RequestMessage#1;class#RequestMessage#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="620">
-              <caret line="340" column="17" selection-start-line="340" selection-start-column="17" selection-end-line="340" selection-end-column="17" />
+            <state relative-caret-position="245">
+              <caret line="124" column="77" selection-start-line="124" selection-start-column="77" selection-end-line="124" selection-end-column="77" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#12376#13070#0" />
-                <element signature="e#13311#14362#0" />
-                <element signature="e#14368#15008#0" />
-                <element signature="e#15014#15437#0" />
+                <element signature="e#10181#10885#0" />
+                <element signature="e#10891#11969#0" />
+                <element signature="e#12036#12409#0" />
+                <element signature="e#12415#12978#0" />
+                <element signature="e#12984#13255#0" />
+                <element signature="e#21365#22118#1" />
+                <element signature="e#20791#21450#0" />
+                <element signature="e#21456#23035#0" />
+                <element signature="e#23104#23105#0" expanded="true" />
+                <element signature="e#23136#23137#0" expanded="true" />
+                <element signature="e#23176#23177#0" expanded="true" />
+                <element signature="e#23209#23210#0" expanded="true" />
+                <element signature="e#23253#23254#0" expanded="true" />
+                <element signature="e#23289#23290#0" expanded="true" />
+                <element signature="e#23337#23338#0" expanded="true" />
+                <element signature="e#23377#23378#0" expanded="true" />
+                <element signature="e#23419#23420#0" expanded="true" />
+                <element signature="e#23454#23455#0" expanded="true" />
+                <element signature="e#23508#23509#0" expanded="true" />
+                <element signature="e#23540#23541#0" expanded="true" />
+                <element signature="e#23595#23596#0" expanded="true" />
+                <element signature="e#23628#23629#0" expanded="true" />
+                <element signature="e#23689#23690#0" expanded="true" />
+                <element signature="e#23728#23729#0" expanded="true" />
+                <element signature="e#23776#23777#0" expanded="true" />
+                <element signature="e#23821#23822#0" expanded="true" />
+                <element signature="e#23866#23867#0" expanded="true" />
+                <element signature="e#23908#23909#0" expanded="true" />
+                <element signature="e#23954#23955#0" expanded="true" />
+                <element signature="e#23997#23998#0" expanded="true" />
+                <element signature="e#24061#24062#0" expanded="true" />
+                <element signature="e#24117#24118#0" expanded="true" />
                 <element signature="initializer##0;class#GUI#0" expanded="true" />
-                <element signature="e#19128#39153#0" />
+                <element signature="e#44570#44571#0" expanded="true" />
+                <element signature="e#44602#44603#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -95,8 +111,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/ChatRoom.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="20">
-              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+            <state relative-caret-position="360">
+              <caret line="24" column="114" selection-start-line="24" selection-start-column="114" selection-end-line="24" selection-end-column="114" />
             </state>
           </provider>
         </entry>
@@ -107,18 +123,9 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/User.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="605">
-              <caret line="56" column="29" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/DatabaseConnector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2540">
+            <state relative-caret-position="20">
               <caret line="68" column="119" selection-start-line="68" selection-start-column="119" selection-end-line="68" selection-end-column="119" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -130,7 +137,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/FileMessage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
+            <state relative-caret-position="112">
               <caret line="50" column="31" selection-start-line="50" selection-start-column="31" selection-end-line="50" selection-end-column="31" />
               <folding>
                 <element signature="e#1286#1287#0" expanded="true" />
@@ -154,12 +161,44 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/LoginForm.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="159">
+              <caret line="75" column="54" selection-start-line="75" selection-start-column="54" selection-end-line="75" selection-end-column="54" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="class#TabChangeListener#0;class#LoginForm#0" />
+                <element signature="method#passwordToString#0;class#LoginForm#0" />
+                <element signature="docComment;method#$$$setupUI$$$#0;class#LoginForm#0" />
+                <element signature="method#$$$setupUI$$$#0;class#LoginForm#0" />
+                <element signature="docComment;method#$$$getRootComponent$$$#0;class#LoginForm#0" />
+                <element signature="class#LoginButtonEventListener#0;class#LoginForm#0" />
+                <element signature="method#getLoginInformation#0;class#LoginForm#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
+            <state relative-caret-position="208">
               <caret line="17" column="73" selection-start-line="17" selection-start-column="73" selection-end-line="17" selection-end-column="73" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/RequestMessage.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="11" column="57" lean-forward="true" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="57" />
+              <folding>
+                <element signature="method#RequestMessage#0;class#RequestMessage#0" />
+                <element signature="method#RequestMessage#1;class#RequestMessage#0" />
               </folding>
             </state>
           </provider>
@@ -208,15 +247,15 @@
         <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/FileMessage.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/Sender.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/RequestMessage.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/LoginForm.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/TextMessage.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/DatabaseConnector.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.form" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/ChatRoom.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/ResponseMessage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/ChatRoom.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/RequestMessage.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.java" />
       </list>
     </option>
   </component>
@@ -239,7 +278,6 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="960" />
     <option name="width" value="960" />
     <option name="height" value="1040" />
   </component>
@@ -248,7 +286,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -282,10 +319,29 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="tsindrenko" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="ChatClient" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ChatClient" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="tsindrenko" type="462c0819:PsiDirectoryNode" />
+              <item name="GUI" type="e9f4de52:FormNode" />
+            </path>
+            <path>
+              <item name="ChatClient" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ChatClient" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="tsindrenko" type="462c0819:PsiDirectoryNode" />
+              <item name="LoginForm" type="e9f4de52:FormNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -367,7 +423,8 @@
       <workItem from="1572981002954" duration="7890000" />
       <workItem from="1573064510822" duration="9814000" />
       <workItem from="1573146113472" duration="15928000" />
-      <workItem from="1573232940613" duration="3272000" />
+      <workItem from="1573232940613" duration="6153000" />
+      <workItem from="1573239901913" duration="6537000" />
     </task>
     <task id="LOCAL-00001" summary="Классы:&#10;MessageReceiver принимает сообщения от сервера в отдельном потоке&#10;MessageSender отправляет сообщения серверу в отдельном потоке">
       <created>1569693295976</created>
@@ -443,7 +500,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="202056000" />
+    <option name="totallyTimeSpent" value="211474000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -455,10 +512,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="0" y="0" width="960" height="1040" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23347548" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29555556" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -466,8 +523,8 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.33259913" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4989339" visible="true" weight="0.27489176" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.33225107" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4989339" visible="true" weight="0.27312776" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -530,6 +587,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/8.0.16/mysql-connector-java-8.0.16.jar!/com/mysql/cj/jdbc/exceptions/SQLError.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1120">
+          <caret line="70" selection-start-line="70" selection-end-line="70" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/Sender.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
@@ -541,26 +605,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/LoginForm.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/LoginMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1640">
-          <caret line="89" column="3" selection-start-line="89" selection-start-column="3" selection-end-line="89" selection-end-column="3" />
+        <state relative-caret-position="40">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#passwordToString#0;class#LoginForm#0" />
-            <element signature="docComment;method#$$$setupUI$$$#0;class#LoginForm#0" />
-            <element signature="method#$$$setupUI$$$#0;class#LoginForm#0" />
-            <element signature="docComment;method#$$$getRootComponent$$$#0;class#LoginForm#0" />
-            <element signature="class#LoginButtonEventListener#0;class#LoginForm#0" />
-            <element signature="method#getLoginInformation#0;class#LoginForm#0" />
+            <element signature="e#303#304#0" expanded="true" />
+            <element signature="e#330#331#0" expanded="true" />
+            <element signature="e#362#363#0" expanded="true" />
+            <element signature="e#390#391#0" expanded="true" />
+            <element signature="e#432#433#0" expanded="true" />
+            <element signature="e#466#467#0" expanded="true" />
+            <element signature="e#501#502#0" expanded="true" />
+            <element signature="e#532#533#0" expanded="true" />
+            <element signature="e#580#581#0" expanded="true" />
+            <element signature="e#620#621#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/8.0.16/mysql-connector-java-8.0.16.jar!/com/mysql/cj/jdbc/exceptions/SQLError.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1120">
-          <caret line="70" selection-start-line="70" selection-end-line="70" />
         </state>
       </provider>
     </entry>
@@ -585,33 +645,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/TextMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
+        <state relative-caret-position="500">
           <caret line="25" column="18" selection-start-line="25" selection-start-column="18" selection-end-line="25" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/LoginMessage.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding>
-            <element signature="e#303#304#0" expanded="true" />
-            <element signature="e#330#331#0" expanded="true" />
-            <element signature="e#362#363#0" expanded="true" />
-            <element signature="e#390#391#0" expanded="true" />
-            <element signature="e#432#433#0" expanded="true" />
-            <element signature="e#466#467#0" expanded="true" />
-            <element signature="e#501#502#0" expanded="true" />
-            <element signature="e#532#533#0" expanded="true" />
-            <element signature="e#580#581#0" expanded="true" />
-            <element signature="e#620#621#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="800">
+          <caret line="56" column="29" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/FileMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
+        <state relative-caret-position="112">
           <caret line="50" column="31" selection-start-line="50" selection-start-column="31" selection-end-line="50" selection-end-column="31" />
           <folding>
             <element signature="e#1286#1287#0" expanded="true" />
@@ -633,10 +681,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/LoginForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="17" column="73" selection-start-line="17" selection-start-column="73" selection-end-line="17" selection-end-column="73" />
+        <state relative-caret-position="159">
+          <caret line="75" column="54" selection-start-line="75" selection-start-column="54" selection-end-line="75" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="class#TabChangeListener#0;class#LoginForm#0" />
+            <element signature="method#passwordToString#0;class#LoginForm#0" />
+            <element signature="docComment;method#$$$setupUI$$$#0;class#LoginForm#0" />
+            <element signature="method#$$$setupUI$$$#0;class#LoginForm#0" />
+            <element signature="docComment;method#$$$getRootComponent$$$#0;class#LoginForm#0" />
+            <element signature="class#LoginButtonEventListener#0;class#LoginForm#0" />
+            <element signature="method#getLoginInformation#0;class#LoginForm#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/DatabaseConnector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="68" column="119" selection-start-line="68" selection-start-column="119" selection-end-line="68" selection-end-column="119" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -645,32 +710,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/ChatRoom.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/DatabaseConnector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2540">
-          <caret line="68" column="119" selection-start-line="68" selection-start-column="119" selection-end-line="68" selection-end-column="119" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/ResponseMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="21" column="125" selection-start-line="21" selection-start-column="125" selection-end-line="21" selection-end-column="125" />
+        <state relative-caret-position="360">
+          <caret line="24" column="114" selection-start-line="24" selection-start-column="114" selection-end-line="24" selection-end-column="114" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/RequestMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="32" column="25" selection-start-line="32" selection-start-column="25" selection-end-line="32" selection-end-column="25" />
+        <state relative-caret-position="180">
+          <caret line="11" column="57" lean-forward="true" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="57" />
           <folding>
             <element signature="method#RequestMessage#0;class#RequestMessage#0" />
             <element signature="method#RequestMessage#1;class#RequestMessage#0" />
@@ -678,36 +726,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/ResponseMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
-          <caret line="340" column="17" selection-start-line="340" selection-start-column="17" selection-end-line="340" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#12376#13070#0" />
-            <element signature="e#13311#14362#0" />
-            <element signature="e#14368#15008#0" />
-            <element signature="e#15014#15437#0" />
-            <element signature="initializer##0;class#GUI#0" expanded="true" />
-            <element signature="e#19128#39153#0" />
-          </folding>
+        <state relative-caret-position="360">
+          <caret line="29" column="136" selection-start-line="29" selection-start-column="136" selection-end-line="29" selection-end-column="136" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.form">
       <provider selected="true" editor-type-id="ui-designer" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="605">
-          <caret line="56" column="29" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/MessageReceiver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="184" column="36" selection-start-line="184" selection-start-column="36" selection-end-line="184" selection-end-column="36" />
+        <state relative-caret-position="428">
+          <caret line="196" column="13" selection-start-line="196" selection-start-column="13" selection-end-line="196" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#showMessage#0;class#MessageReceiver#0" />
@@ -715,8 +747,62 @@
             <element signature="method#serviceHandler#0;class#MessageReceiver#0" />
             <element signature="method#receiveFile#0;class#MessageReceiver#0" />
             <element signature="method#stopReceiver#0;class#MessageReceiver#0" />
-            <element signature="e#11204#11205#0" expanded="true" />
-            <element signature="e#11240#11241#0" expanded="true" />
+            <element signature="e#11218#11219#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="17" column="73" selection-start-line="17" selection-start-column="73" selection-end-line="17" selection-end-column="73" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/tsindrenko/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="124" column="77" selection-start-line="124" selection-start-column="77" selection-end-line="124" selection-end-column="77" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#10181#10885#0" />
+            <element signature="e#10891#11969#0" />
+            <element signature="e#12036#12409#0" />
+            <element signature="e#12415#12978#0" />
+            <element signature="e#12984#13255#0" />
+            <element signature="e#21365#22118#1" />
+            <element signature="e#20791#21450#0" />
+            <element signature="e#21456#23035#0" />
+            <element signature="e#23104#23105#0" expanded="true" />
+            <element signature="e#23136#23137#0" expanded="true" />
+            <element signature="e#23176#23177#0" expanded="true" />
+            <element signature="e#23209#23210#0" expanded="true" />
+            <element signature="e#23253#23254#0" expanded="true" />
+            <element signature="e#23289#23290#0" expanded="true" />
+            <element signature="e#23337#23338#0" expanded="true" />
+            <element signature="e#23377#23378#0" expanded="true" />
+            <element signature="e#23419#23420#0" expanded="true" />
+            <element signature="e#23454#23455#0" expanded="true" />
+            <element signature="e#23508#23509#0" expanded="true" />
+            <element signature="e#23540#23541#0" expanded="true" />
+            <element signature="e#23595#23596#0" expanded="true" />
+            <element signature="e#23628#23629#0" expanded="true" />
+            <element signature="e#23689#23690#0" expanded="true" />
+            <element signature="e#23728#23729#0" expanded="true" />
+            <element signature="e#23776#23777#0" expanded="true" />
+            <element signature="e#23821#23822#0" expanded="true" />
+            <element signature="e#23866#23867#0" expanded="true" />
+            <element signature="e#23908#23909#0" expanded="true" />
+            <element signature="e#23954#23955#0" expanded="true" />
+            <element signature="e#23997#23998#0" expanded="true" />
+            <element signature="e#24061#24062#0" expanded="true" />
+            <element signature="e#24117#24118#0" expanded="true" />
+            <element signature="initializer##0;class#GUI#0" expanded="true" />
+            <element signature="e#44570#44571#0" expanded="true" />
+            <element signature="e#44602#44603#0" expanded="true" />
           </folding>
         </state>
       </provider>

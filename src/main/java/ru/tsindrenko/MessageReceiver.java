@@ -68,13 +68,8 @@ public class MessageReceiver extends Thread {
         System.out.println("Пришло сообщение: " + message);
         String header;
         JSONObject json;
-        try {
-            json = new JSONObject(message);
-            header = json.get("type").toString();
-        }
-        catch (JSONException ex){
-            header = chatroomInfo;
-        }
+        json = new JSONObject(message);
+        header = json.get("type").toString();
         switch (header){
             case fileInfo:
                 receiveFile(gson.fromJson(message,FileMessage.class));
@@ -95,9 +90,7 @@ public class MessageReceiver extends Thread {
                 gui.getChatrooms().addAll(chatroomNames);
                 gui.fillChatroomList();
                 break;
-            case chatroomInfo:
-                //gui.fillChatroomList(gson.fromJson(message,new TypeToken<List<Integer>>() {}.getType()));
-                break;
+
             case responseInfo:
                 responseHandler(gson.fromJson(message,ResponseMessage.class));
                 break;
@@ -182,6 +175,7 @@ public class MessageReceiver extends Thread {
                     System.out.println(gui.getModerators());
                     gui.getManageModeratorsList().setListData(gui.getModerators().keySet().toArray());
                     gui.getChatComboBox().setEnabled(true);
+                    gui.setCurrentChatAdmin(message.getUser().getNickname());
                     gui.setRights();
                 }
             }
@@ -192,12 +186,14 @@ public class MessageReceiver extends Thread {
         if(message.getClassType().equals(chatroomInfo)){
             if(message.getStatus().equals(success) && message.getAction().equals(createRequest)){
                 gui.clearChatroomCreation();
-                JOptionPane.showMessageDialog(null, "Чат успешно создан");
             }
             if(message.getStatus().equals(success) && message.getAction().equals(getRequest)){
                 for(String chatName:message.getBody().keySet()){
                     gui.getChatComboBox().addItem(chatName);
                 }
+            }
+            if(message.getStatus().equals(success) && message.getAction().equals(updateRequest)){
+                gui.finishEditing();
             }
         }
     }

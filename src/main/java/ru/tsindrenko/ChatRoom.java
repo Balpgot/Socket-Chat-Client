@@ -22,6 +22,13 @@ public class ChatRoom {
         this.is_dialog = is_dialog;
     }
 
+    public ChatRoom(String name, Integer admin_id, HashSet<Integer> participants_id, HashSet<Integer> blacklist) {
+        this.name = name;
+        this.admin_id = admin_id;
+        this.participants_id = participants_id;
+        this.blacklist = blacklist;
+    }
+
     public ChatRoom(String name, Integer admin_id, boolean is_dialog, HashSet<Integer> participants_id) {
         this.name = name;
         this.admin_id = admin_id;
